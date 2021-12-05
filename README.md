@@ -1,6 +1,19 @@
 # Money Game
 
 ## Minimum Viable Product
+
+**Technological Stack:**
+<p align="center">
+  <img src="./docs/images/tech_stack.png" alt="tech stack" height="400px">
+</p>
+
+**Frontend mock ups:**
+<p align="center">
+  <img src="./docs/images/frontend_mvp_normal_mockup.png" alt="frontend mockup normal users" height="450px">
+  <img src="./docs/images/frontend_mvp_admin_mockup.png" alt="frontend mockup admin" height="450px">
+  <img src="./docs/images/frontend_mvp_auth_mockup.png" alt="frontend mockup authentication" height="450px">
+</p>
+
 **Data:**
 * unique user name to login
 * money,
@@ -18,12 +31,7 @@
 * login
 * addItem (picture, name, price, auto snag id): upload new item to store
 
-**Frontend mock ups:**
-<p align="center">
-  <img src="./docs/images/frontend_mvp_normal_mockup.png" alt="frontend mockup normal users" height="450px">
-  <img src="./docs/images/frontend_mvp_admin_mockup.png" alt="frontend mockup admin" height="450px">
-  <img src="./docs/images/frontend_mvp_auth_mockup.png" alt="frontend mockup authentication" height="450px">
-</p>
+
 
 
 ## Project setup
