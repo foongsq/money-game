@@ -1,4 +1,30 @@
-# money-game
+# Money Game
+
+## Minimum Viable Product
+**Data:**
+* unique user name to login
+* money,
+* inventory: itemid, picture, quantity, sell price
+* store: itemid, picture, buy price
+
+**Backend endpoints used by normal users:**
+* create account (unique username, password)
+* login (username, password)
+* addMoney
+* buyItem (if item in inventory, incrememnt quantity by 1, if not, add item, decrement money)
+* sellItem (decrement quantity, incrememnt money)
+
+**Backend endpoints used by admin:**
+* login
+* addItem (picture, name, price, auto snag id): upload new item to store
+
+**Frontend mock ups:**
+<p align="center">
+  <img src="./docs/images/frontend_mvp_normal_mockup.png" alt="frontend mockup normal users" height="450px">
+  <img src="./docs/images/frontend_mvp_admin_mockup.png" alt="frontend mockup admin" height="450px">
+  <img src="./docs/images/frontend_mvp_auth_mockup.png" alt="frontend mockup authentication" height="450px">
+</p>
+
 
 ## Project setup
 ```
