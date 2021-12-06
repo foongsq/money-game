@@ -1,17 +1,13 @@
 <template>
   <div id="app">
-    <Dashboard />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Dashboard from './views/Dashboard.vue'
 
 export default {
   name: 'App',
-  components: {
-    Dashboard
-  }
 }
 </script>
 
@@ -31,5 +27,6 @@ export default {
   --light-purple: #b4a7d6;
   --light-medium-purple: #a893e7;
   --medium-purple: #8e7cc3;
+  --slate-grey: #6c757d;
 }
 </style>
