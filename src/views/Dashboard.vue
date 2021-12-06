@@ -36,7 +36,9 @@
       <button class="btn btn-success w-100">Work (+10)</button>
     </div>
     <div class="logoutButtonDiv">
-      <button class="btn btn-secondary w-100">Logout</button>
+      <button class="btn btn-secondary w-100">
+        <router-link to="/authentication">Logout</router-link>
+      </button>
     </div>
   </div>
 </template>
