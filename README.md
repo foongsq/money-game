@@ -15,21 +15,21 @@
 </p>
 
 **Data:**
-* unique user name to login
-* money,
-* inventory: itemid, picture, quantity, sell price
-* store: itemid, picture, buy price
+* Authentication: unique username and password to signin
+* Money
+* Inventory: itemid, picture, quantity, sell price
+* Store: itemid, picture, buy price
 
 **Backend endpoints used by normal users:**
-* create account (unique username, password)
-* login (username, password)
-* addMoney
-* buyItem (if item in inventory, incrememnt quantity by 1, if not, add item, decrement money)
-* sellItem (decrement quantity, incrememnt money)
+* `signup` (unique username, password)
+* `signin` (username, password)
+* `addMoney`
+* `buyItem` (if item in inventory, incrememnt quantity by 1, if not, add item, decrement money)
+* `sellItem` (decrement quantity, incrememnt money)
 
 **Backend endpoints used by admin:**
-* login
-* addItem (picture, name, price, auto snag id): upload new item to store
+* `signin`
+* `addItem` (picture, name, price, auto snag id): upload new item to store
 
 ## Project setup
 **Install dependencies:** `npm install`
