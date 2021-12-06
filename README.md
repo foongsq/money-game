@@ -24,6 +24,7 @@
 **Backend endpoints used by admin:**
 * `signin`
 * `addItem` (picture, name, price, auto snag id): upload new item to store
+* `deleteItem` : delete item from store
 
 ## Project setup
 **Install dependencies:** `npm install`
