@@ -41,3 +41,7 @@
 **Lints and fixes files:** `npm run lint`
 
 **Customize configuration:** See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Infrastructure
+**Additional Libraries/Packages used:**
+* [Vue 3D Carousel](https://github.com/wlada/vue-carousel-3d)
