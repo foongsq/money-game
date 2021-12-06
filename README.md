@@ -1,12 +1,6 @@
 # Money Game
 
 ## Minimum Viable Product
-
-**Technological Stack:**
-<p align="center">
-  <img src="./docs/images/tech_stack.png" alt="tech stack" height="400px">
-</p>
-
 **Frontend mock ups:**
 <p align="center">
   <img src="./docs/images/frontend_mvp_normal_mockup.png" alt="frontend mockup normal users" height="450px">
@@ -43,5 +37,10 @@
 **Customize configuration:** See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## Infrastructure
+**Technological Stack:**
+<p align="center">
+  <img src="./docs/images/tech_stack.png" alt="tech stack" height="400px">
+</p>
+
 **Additional Libraries/Packages used:**
 * [Vue 3D Carousel](https://github.com/wlada/vue-carousel-3d)
