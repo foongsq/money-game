@@ -1,8 +1,9 @@
 # Money Game
 
 ## Minimum Viable Product
-**Frontend mock ups:**
 This app was only designed to be used on mobile, not on desktop.
+
+**Frontend mock ups:**
 <p align="center">
   <img src="./docs/images/frontend_mvp_normal_mockup.png" alt="frontend mockup normal users" height="450px">
   <img src="./docs/images/frontend_mvp_admin_mockup.png" alt="frontend mockup admin" height="450px">
