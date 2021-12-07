@@ -46,3 +46,7 @@ This app was only designed to be used on mobile, not on desktop.
 
 **Additional Libraries/Packages used:**
 * [Vue 3D Carousel](https://github.com/wlada/vue-carousel-3d)
+
+**Tutorials referred to:**
+* [Handling file uploads in Vue](https://www.digitalocean.com/community/tutorials/how-to-handle-file-uploads-in-vue-2)
+* [Flask and MongoDB tutorial](https://www.youtube.com/watch?v=o8jK5enu4L4)
