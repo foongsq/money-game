@@ -16,16 +16,19 @@ This app was only designed to be used on mobile, not on desktop.
 * Store: itemid, picture, buy price
 
 **Backend endpoints used by normal users:**
-* `signup` (unique username, password)
-* `signin` (username, password)
-* `addMoney`
-* `buyItem` (if item in inventory, incrememnt quantity by 1, if not, add item, decrement money)
-* `sellItem` (decrement quantity, incrememnt money)
+* `/signup`: POST method that takes unique username, password, and creates a user in the database, returns userId
+* `/signin`: POST method that username, password, returns userId
+* `/addMoney`: POST/UPDATE method that takes userId, and updated money
+* `/getInventoryItems`: GET method that gets all items in inventory
+* `/getStoreItems`: GET method that gets all items in store
+* `/buyItem`: POST/UPDATE method -> decrement money; if item in inventory, incrememnt quantity by 1; else, add item;
+* `/sellItem`: POST/UPDATE method -> decrement quantity; incrememnt money
 
 **Backend endpoints used by admin:**
-* `signin`
-* `addItem` (picture, name, price, auto snag id): upload new item to store
-* `deleteItem` : delete item from store
+* `/signin`: POST method that username, password, returns userId of admin
+* `/getStoreItems`: GET method that gets all items in store
+* `/addItem`: POST method that uploads new item to store (picture, name, price, auto snag id)
+* `/deleteItem` : DELETE method that deletes an item from store
 
 ## Project setup
 **Install dependencies:** `npm install`
