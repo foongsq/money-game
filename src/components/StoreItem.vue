@@ -4,7 +4,10 @@
       <img class="itemImg" :src='"../assets/chips.jpg"' height="400" width="400"/>
       <p class="itemName">{{itemName}}</p>
     </div>
-    <div class="buyPriceButton">
+    <div v-if="isAdmin" class="buyPriceButton">
+      <p>Delete</p>
+    </div>
+    <div v-else class="buyPriceButton">
       <p>Buy for</p>
       <img class="moneyImage" :src='"../assets/money-icon.jpg"' />
       <p>{{buyPrice ? buyPrice : 3}}</p>
@@ -20,6 +23,7 @@ export default {
     imgUrl: String,
     itemName: String,
     buyPrice: Number,
+    isAdmin: Boolean,
   }
 }
 </script>

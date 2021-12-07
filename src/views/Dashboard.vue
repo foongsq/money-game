@@ -28,16 +28,17 @@
           <StoreItem 
             :itemName="storeItem.itemName" 
             :imgUrl="storeItem.imgUrl"
-            :buyPrice="storeItem.buyPrice"/>
+            :buyPrice="storeItem.buyPrice"
+            :isAdmin="false" />
         </slide>
       </carousel-3d>
     </div>
     <div class="workButtonDiv">
-      <button class="btn btn-success w-100">Work (+10)</button>
+      <button class="btn btn-success w-100" @click="onWork">Work (+10)</button>
     </div>
     <div class="logoutButtonDiv">
       <button class="btn btn-secondary w-100">
-        <router-link to="/authentication">Logout</router-link>
+        <router-link style="text-decoration: none; color: inherit;" to="/authentication" >Logout</router-link>
       </button>
     </div>
   </div>
@@ -122,12 +123,17 @@ export default {
         },
       ],
     }
+  },
+  methods: {
+    onWork() {
+      this.myMoney += 10;
+    }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<!-- Not scoped because we want AdminDashboard to receive same styling for store -->
+<style>
 .dashboard {
   max-width: 600px;
   height: 100vh;
@@ -214,6 +220,10 @@ export default {
 /* Add padding and margin to buttons */
 .workButtonDiv, .logoutButtonDiv {
   padding: 0.5rem;
+}
+
+.logoutLink {
+  text-decoration: none;
 }
 
 /* - Change background color of slide to purple

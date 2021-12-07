@@ -28,5 +28,6 @@ export default {
   --light-medium-purple: #a893e7;
   --medium-purple: #8e7cc3;
   --slate-grey: #6c757d;
+  --light-blue: #cfe2f3;
 }
 </style>

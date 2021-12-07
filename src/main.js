@@ -8,7 +8,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import Dashboard from './views/Dashboard.vue';
 import Authentication from './views/Authentication.vue';
-// import AdminDashboard from './views/AdminDashboard.vue';
+import AdminDashboard from './views/AdminDashboard.vue';
 
 
 // Make BootstrapVue available throughout your project
@@ -23,7 +23,7 @@ Vue.config.productionTip = false
 const routes = [
   { path: '/authentication', component: Authentication },
   { path: '/', component: Dashboard },
-  // { path: '/admin-dashboard', component: AdminDashboard }
+  { path: '/admin-dashboard', component: AdminDashboard }
 ]
 
 const router = new VueRouter({
