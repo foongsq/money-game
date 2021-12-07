@@ -15,6 +15,10 @@ This app was only designed to be used on mobile, not on desktop.
 * Inventory: itemid, picture, quantity, sell price
 * Store: itemid, picture, buy price
 
+<p align="center">
+  <img src="./docs/images/database_plan.png" alt="frontend mockup normal users" height="400px">
+</p>
+
 **Backend endpoints used by normal users:**
 * `/signup`: POST method that takes unique username, password, and creates a user in the database, returns userId
 * `/signin`: POST method that username, password, returns userId
@@ -30,7 +34,7 @@ This app was only designed to be used on mobile, not on desktop.
 * `/addItem`: POST method that uploads new item to store (picture, name, price, auto snag id)
 * `/deleteItem` : DELETE method that deletes an item from store
 
-## Project setup
+## Vue Project setup
 **Install dependencies:** `npm install`
 
 **Compiles and hot-reloads for development:** `npm run serve`
@@ -40,6 +44,17 @@ This app was only designed to be used on mobile, not on desktop.
 **Lints and fixes files:** `npm run lint`
 
 **Customize configuration:** See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## API Project setup
+**Activating python virtual environment:** `cd api/Scripts`, `activate`
+
+**Install dependencies:** `pip install flask pymongo`
+
+**Run server:** `python server.py`
+
+Open Postman to send requests
+
+Open MongoDB Compass to look at database contents
 
 ## Infrastructure
 **Technological Stack:**
