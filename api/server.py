@@ -1,6 +1,7 @@
 from flask import Flask, Response, request
 import pymongo # To connect flask app to mongodb
 import json
+from bson.objectid import ObjectId
 
 # Create a flask app
 app = Flask(__name__)
@@ -38,6 +39,33 @@ def signup():
       mimetype="application/json")
   except Exception as ex:
     print(ex)
+
+########################################
+# To get a userid from the database
+@app.route("/signin", methods=["GET"])
+def signin():
+  try:
+    data = list(db.users.find({"username": request.form["username"]}))
+    print(data)
+    return Response(
+      response=json.dumps( # send object as a json
+        {
+          "message": "User succesfully retrieved", 
+          "username": data[0]["username"],
+        }
+      ), 
+      status=200, 
+      mimetype="application/json")
+  except Exception as ex:
+    print(ex)
+    return Response(
+      response=json.dumps( # send object as a json
+        {
+          "message": "User cannot be retrieved", 
+        }
+      ), 
+      status=500, 
+      mimetype="application/json")
 
 ########################################
 # Run your flask app on port 80
