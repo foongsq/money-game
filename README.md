@@ -32,8 +32,8 @@ This app was only designed to be used on mobile, not on desktop.
 **Backend endpoints used by admin:**
 * `/signin`: POST method that username, password, returns userId of admin
 * `/getStoreItems`: GET method that gets all items in store
-* `/addItem`: POST method that uploads new item to store (picture, name, price, auto snag id)
-* `/deleteItem` : DELETE method that deletes an item from store
+* `/addStoreItem`: POST method that uploads new item to store (picture, name, price, auto snag id)
+* `/deleteStoreItem` : DELETE method that deletes an item from store
 
 ## Vue Project setup
 **Install dependencies:** `npm install`
