@@ -27,7 +27,7 @@ This app was only designed to be used on mobile, not on desktop.
 * `addItem` (picture, name, price, auto snag id): upload new item to store
 * `deleteItem` : delete item from store
 
-## Project setup
+## Vue Project setup
 **Install dependencies:** `npm install`
 
 **Compiles and hot-reloads for development:** `npm run serve`
@@ -42,6 +42,11 @@ This app was only designed to be used on mobile, not on desktop.
 **Technological Stack:**
 <p align="center">
   <img src="./docs/images/tech_stack.png" alt="tech stack" height="400px">
+</p>
+
+**Backend Infrastructure:**
+<p align="center">
+  <img src="./docs/images/backend_infra.png" alt="backend infrastructure" height="400px">
 </p>
 
 **Additional Libraries/Packages used:**

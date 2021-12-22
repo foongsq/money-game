@@ -2,6 +2,7 @@ from flask import Flask, Response, request
 import pymongo # To connect flask app to mongodb
 import json
 from bson.objectid import ObjectId
+from bson.binary import Binary
 
 # Create a flask app
 app = Flask(__name__)
@@ -74,7 +75,7 @@ def signin():
       mimetype="application/json")
 
 ########################################
-# To get a userid from the database
+# To update a user's money
 @app.route("/addMoney", methods=["POST"])
 def addMoney():
   try:
@@ -98,6 +99,42 @@ def addMoney():
       response=json.dumps( # send object as a json
         {
           "message": "Money cannot be updated", 
+        }
+      ), 
+      status=500, 
+      mimetype="application/json")
+
+########################################
+# To add an item to the store
+@app.route("/addStoreItem", methods=["POST"])
+def addStoreItem():
+  try:
+    img = request.files["imgUrl"]
+    with open(img, "rb") as f: # rb opens the file in binary format for reading
+      encodedImg = Binary(f.read()) # read image file and store as array of bytes
+    storeItem = {
+      "itemName": request.form["itemName"],
+      "imgUrl": encodedImg, 
+      "buyPrice": request.form["buyPrice"],
+    }
+    dbResponse = db.store.insert_one(storeItem)
+    # for attr in dir(dbResponse):
+    #   print(attr)
+    return Response(
+      response=json.dumps( # send object as a json
+        {
+          "message": "Store item succesfully added", 
+          "id":f"{dbResponse.inserted_id}"
+        }
+      ), 
+      status=200, 
+      mimetype="application/json")
+  except Exception as ex:
+    print(ex)
+    return Response(
+      response=json.dumps( # send object as a json
+        {
+          "message": "Store item cannot be added", 
         }
       ), 
       status=500, 
