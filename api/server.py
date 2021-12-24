@@ -1,13 +1,10 @@
 from flask import Flask, Response, request
+from flask_cors import CORS
 import pymongo # To connect flask app to mongodb
 import json
 from bson.objectid import ObjectId
 from pymongo.collection import ReturnDocument
-import gridfs
-
-# import os
-# from dotenv import load_dotenv, find_dotenvload_dotenv(find_dotenv())
-# os.getenv('SECRET_KEY')
+import base64
 
 # Helper methods
 
@@ -25,6 +22,7 @@ def insert_item_into_store(item):
 
 # Create a flask app
 app = Flask(__name__)
+cors = CORS(app, resources={r"/*": { "origins": "http://localhost:8080"}})
 
 # Connect to mongodb (always wrap connection in try except block)
 try:
@@ -34,7 +32,6 @@ try:
     serverSelectionTimeoutMS=1000 # if cannot connect in 1000ms, means connection failed
   )
   db = mongo.moneygame # access database named moneygame
-  fs = gridfs.GridFS(db)
   mongo.server_info() # trigger exception if connection fails
 except: 
   print("Error - Cannot connect to db")
@@ -123,13 +120,7 @@ def add_money():
   except Exception as ex:
     print(ex)
     return Response(
-      response=json.dumps( # send object as a json
-        {
-          "message": "Money cannot be updated", 
-        }
-      ), 
-      status=500, 
-      mimetype="application/json")
+      response=json.dumps({"message": "Money cannot be updated"}), status=500, mimetype="application/json")
 
 ########################################
 # To add an item to the store
@@ -137,10 +128,10 @@ def add_money():
 def add_store_item():
   try:
     img = request.files["img"]
-    img_id = fs.put(img)
+    b64_img = base64.b64encode(img.read()).decode('utf-8')
     storeItem = {
       "itemName": request.form["itemName"],
-      "imgId": img_id, 
+      "base64Img": b64_img, 
       "buyPrice": request.form["buyPrice"],
     }
     inserted_item = insert_item_into_store(storeItem)
@@ -149,7 +140,7 @@ def add_store_item():
         {
           "message": "Store item succesfully added", 
           "itemName": f"{inserted_item['itemName']}",
-          "imgId": f"{inserted_item['imgId']}",
+          "base64Img": f"{inserted_item['base64Img']}",
           "buyPrice": f"{inserted_item['buyPrice']}",
         }
       ), 
@@ -158,13 +149,7 @@ def add_store_item():
   except Exception as ex:
     print(ex)
     return Response(
-      response=json.dumps( # send object as a json
-        {
-          "message": "Store item cannot be added", 
-        }
-      ), 
-      status=500, 
-      mimetype="application/json")
+      response=json.dumps({"message": "Store item cannot be added"}), status=500, mimetype="application/json")
 
 ########################################
 # To get all items in the store
@@ -174,21 +159,33 @@ def get_all_store_items():
     store_items = list(db.store.find())
     for item in store_items: # convert object id to string since object id is not json serializable
       item["_id"] = str(item["_id"])
-      item["imgId"] = str(item["imgId"])
     return Response(
       response=json.dumps(store_items), 
       status=200, 
       mimetype="application/json")
   except Exception as ex:
     print(ex)
+    return Response(response=json.dumps({"message": "Store items cannot be retrieved"}), status=500, mimetype="application/json")
+
+########################################
+# To get delete an item from the store
+@app.route("/storeItem/<id>", methods=["DELETE"])
+def delete_store_item(id):
+  try:
+    deleted_item = db.store.find_one_and_delete({"_id": ObjectId(id)})
     return Response(
-      response=json.dumps( # send object as a json
+      response=json.dumps(
         {
-          "message": "Store items cannot be retrieved", 
-        }
-      ), 
-      status=500, 
+          "message": "Store item successfully deleted",
+          "_id": f"{deleted_item['_id']}",
+          "itemName": f"{deleted_item['itemName']}",
+          "buyPrice": f"{deleted_item['itemName']}",
+        }), 
+      status=200, 
       mimetype="application/json")
+  except Exception as ex:
+    print(ex)
+    return Response(response=json.dumps({"message": "Store item cannot be deleted"}), status=500, mimetype="application/json")
 
 ########################################
 # Run your flask app on port 80

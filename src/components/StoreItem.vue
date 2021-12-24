@@ -1,7 +1,7 @@
 <template>
   <button class="storeItemButton">
     <div class="storeItem">
-      <img class="itemImg" :src='"../assets/chips.jpg"' height="400" width="400"/>
+      <img class="itemImg" :src='img_formatted' height="400" width="400"/>
       <p class="itemName">{{itemName}}</p>
     </div>
     <div v-if="isAdmin" class="buyPriceButton">
@@ -19,11 +19,15 @@
 export default {
   name: 'StoreItem',
   props: {
-    itemId: Number,
-    imgUrl: String,
+    img: String,
     itemName: String,
-    buyPrice: Number,
+    buyPrice: String,
     isAdmin: Boolean,
+  },
+  computed: {
+    img_formatted: function () {
+      return "data:image/jpg;base64, " + this.img;
+    }
   }
 }
 </script>

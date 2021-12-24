@@ -24,10 +24,10 @@
     <div class="storeDiv">
       <h3>Store</h3>
       <carousel-3d :autoplay="true" class="storeCarousel" :height="carouselHeight" :width="carouselWidth">
-        <slide v-for="storeItem in store" :index="storeItem.itemId" :key="storeItem.itemId" class="storeSlides">
+        <slide v-for="(storeItem, index) in store" :index="index" :key="index" class="storeSlides">
           <StoreItem 
             :itemName="storeItem.itemName" 
-            :imgUrl="storeItem.imgUrl"
+            :img="storeItem.base64Img"
             :buyPrice="storeItem.buyPrice"
             :isAdmin="false" />
         </slide>
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import StoreItem from '../components/StoreItem.vue';
 import InventoryItem from '../components/InventoryItem.vue';
 import { Carousel3d, Slide } from 'vue-carousel-3d';
@@ -128,6 +129,14 @@ export default {
     onWork() {
       this.myMoney += 10;
     }
+  },
+  created: async function() {
+    await axios.get("http://localhost:80/store").then((response) => {
+      this.store = response.data;
+      console.log("this.store", this.store);
+    }, (error) => {
+      console.log(error);
+    });
   }
 }
 </script>

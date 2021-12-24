@@ -22,19 +22,19 @@ This app was only designed to be used on mobile, not on desktop.
 
 **Abstract backend API used by normal users:**
 
-[x] `/user`: POST method that takes unique username, password, and creates a user in the database, returns userId
-[x] `/user`: POST method that username, password, returns userId
-[x] `/money`: POST/UPDATE method that takes userId, and updated money
-[] `/inventory`: GET method that gets all items in inventory
-[x] `/store`: GET method that gets all items in store
-[] `/buyItem`: POST/UPDATE method -> decrement money; if item in inventory, incrememnt quantity by 1; else, add item;
-[] `/sellItem`: POST/UPDATE method -> decrement quantity; incrememnt money
+- [x] `/user`: POST method that takes unique username, password, and creates a user in the database, returns userId
+- [x] `/user`: POST method that username, password, returns userId
+- [x] `/money`: POST/UPDATE method that takes userId, and updated money
+- [] `/inventory`: GET method that gets all items in inventory
+- [x] `/store`: GET method that gets all items in store
+- [] `/buyItem`: POST/UPDATE method -> decrement money; if item in inventory, incrememnt quantity by 1; else, add item;
+- [] `/sellItem`: POST/UPDATE method -> decrement quantity; incrememnt money
 
 **Abstract backend API used by admin:**
-[x] `/user`: POST method that username, password, returns userId of admin
-[x] `/store`: GET method that gets all items in store
-[x] `/storeItem`: POST method that uploads new item to store (picture, name, price, auto snag id)
-[] `/storeItem` : DELETE method that deletes an item from store
+- [x] `/user`: POST method that username, password, returns userId of admin
+- [x] `/store`: GET method that gets all items in store
+- [x] `/storeItem`: POST method that uploads new item to store (picture, name, price, auto snag id)
+- [] `/storeItem` : DELETE method that deletes an item from store
 
 ## Vue Project setup
 **Install dependencies:** `npm install`
@@ -164,6 +164,13 @@ img -> base64 -> blob
 using fetch api, response.blob();
 <img src={URL.createObjectURL(responseData)} />
 ```
+
+**Technical: Cross Origin Resource Sharing (CORS)**
+A HTTP header mechanism that allows a server to indicate which origins other than its own that a browser can load resources from. Browsers usually make a preflight request to the server to check that the server will permit the request.
+
+**Security concern: Exposing mongodb object id in url query**
+
+Originally, I was concerned with exposing the mongodb object id in url query (when building endpoint for deleting store items), but upon some reading, I found that the object id is based upon the time of creation of the document, hence the information is not sensitive. Also, [someone on quora](https://www.quora.com/What-if-any-are-the-security-risks-associated-with-exposing-a-MongoID-string-in-a-URL) mentioned that trying to hide the object id is a kind of "security through obscurity" practice, which we should not be depending on. We should instead focus on access control to the database.
 
 ### Glossary
 
