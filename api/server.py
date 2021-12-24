@@ -2,7 +2,26 @@ from flask import Flask, Response, request
 import pymongo # To connect flask app to mongodb
 import json
 from bson.objectid import ObjectId
-from bson.binary import Binary
+from pymongo.collection import ReturnDocument
+import gridfs
+
+# import os
+# from dotenv import load_dotenv, find_dotenvload_dotenv(find_dotenv())
+# os.getenv('SECRET_KEY')
+
+# Helper methods
+
+# Inserts an item into users db and returns the inserted item
+def insert_item_into_users(item):
+  db_response = db.users.insert_one(item)
+  inserted_item = db.users.find_one(db_response.inserted_id)
+  return inserted_item
+
+# Inserts an item into store db and returns the inserted item
+def insert_item_into_store(item):
+  db_response = db.store.insert_one(item)
+  inserted_item = db.store.find_one(db_response.inserted_id)
+  return inserted_item
 
 # Create a flask app
 app = Flask(__name__)
@@ -15,6 +34,7 @@ try:
     serverSelectionTimeoutMS=1000 # if cannot connect in 1000ms, means connection failed
   )
   db = mongo.moneygame # access database named moneygame
+  fs = gridfs.GridFS(db)
   mongo.server_info() # trigger exception if connection fails
 except: 
   print("Error - Cannot connect to db")
@@ -23,7 +43,7 @@ except:
 # To add a new user (with username, password, and 0 money, 
 # and empty inventory) into the database
 # TODO: Make sure username is not already in the database
-@app.route("/signup", methods=["POST"])
+@app.route("/user", methods=["POST"])
 def signup():
   try:
     user = {
@@ -32,12 +52,17 @@ def signup():
       "money": 0,
       "inventory": [],
     }
-    dbResponse = db.users.insert_one(user)
+    inserted_item = insert_item_into_users(user)
+    # for attr in dir(db_response):
+      # print(attr)
     return Response(
       response=json.dumps( # send object as a json
         {
           "message": "User created successfully", 
-          "id":f"{dbResponse.inserted_id}"
+          "username": f"{inserted_item['username']}",
+          "password": f"{inserted_item['password']}",
+          "money": f"{inserted_item['money']}",
+          "inventory": f"{inserted_item['inventory']}"
         }
       ), 
       status=200, 
@@ -47,14 +72,13 @@ def signup():
 
 ########################################
 # To get all user's data from the database
-@app.route("/signin", methods=["GET"])
+@app.route("/user", methods=["GET"])
 def signin():
   try:
     data = list(db.users.find({"username": request.form["username"]}))
     return Response(
       response=json.dumps( # send object as a json
         {
-          "message": "User succesfully retrieved", 
           "username": data[0]["username"],
           "password": data[0]["password"],
           "money": data[0]["money"],
@@ -76,19 +100,22 @@ def signin():
 
 ########################################
 # To update a user's money
-@app.route("/addMoney", methods=["POST"])
-def addMoney():
+@app.route("/money", methods=["POST"])
+def add_money():
   try:
-    dbResponse = db.users.update_one(
+    updated_item = db.users.find_one_and_update(
       {"username": request.form["username"]},
-      {"$set": { "money": request.form["money"]}}
+      {"$set": { "money": request.form["money"]}},
+      return_document=ReturnDocument.AFTER
     )
-    # for attr in dir(dbResponse):
-    #   print(attr)
     return Response(
       response=json.dumps( # send object as a json
         {
           "message": "Money succesfully updated", 
+          "username": f"{updated_item['username']}",
+          "password": f"{updated_item['password']}",
+          "money": f"{updated_item['money']}",
+          "inventory": f"{updated_item['inventory']}"
         }
       ), 
       status=200, 
@@ -106,25 +133,24 @@ def addMoney():
 
 ########################################
 # To add an item to the store
-@app.route("/addStoreItem", methods=["POST"])
-def addStoreItem():
+@app.route("/storeItem", methods=["POST"])
+def add_store_item():
   try:
-    img = request.files["imgUrl"]
-    with open(img, "rb") as f: # rb opens the file in binary format for reading
-      encodedImg = Binary(f.read()) # read image file and store as array of bytes
+    img = request.files["img"]
+    img_id = fs.put(img)
     storeItem = {
       "itemName": request.form["itemName"],
-      "imgUrl": encodedImg, 
+      "imgId": img_id, 
       "buyPrice": request.form["buyPrice"],
     }
-    dbResponse = db.store.insert_one(storeItem)
-    # for attr in dir(dbResponse):
-    #   print(attr)
+    inserted_item = insert_item_into_store(storeItem)
     return Response(
       response=json.dumps( # send object as a json
         {
           "message": "Store item succesfully added", 
-          "id":f"{dbResponse.inserted_id}"
+          "itemName": f"{inserted_item['itemName']}",
+          "imgId": f"{inserted_item['imgId']}",
+          "buyPrice": f"{inserted_item['buyPrice']}",
         }
       ), 
       status=200, 
@@ -135,6 +161,30 @@ def addStoreItem():
       response=json.dumps( # send object as a json
         {
           "message": "Store item cannot be added", 
+        }
+      ), 
+      status=500, 
+      mimetype="application/json")
+
+########################################
+# To get all items in the store
+@app.route("/store", methods=["GET"])
+def get_all_store_items():
+  try:
+    store_items = list(db.store.find())
+    for item in store_items: # convert object id to string since object id is not json serializable
+      item["_id"] = str(item["_id"])
+      item["imgId"] = str(item["imgId"])
+    return Response(
+      response=json.dumps(store_items), 
+      status=200, 
+      mimetype="application/json")
+  except Exception as ex:
+    print(ex)
+    return Response(
+      response=json.dumps( # send object as a json
+        {
+          "message": "Store items cannot be retrieved", 
         }
       ), 
       status=500, 
