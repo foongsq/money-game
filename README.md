@@ -82,7 +82,7 @@ python server.py
 **Additional Libraries/Packages used:**
 * [Vue 3D Carousel](https://github.com/wlada/vue-carousel-3d)
 
-**Tutorials referred to:**
+**References:**
 * [Handling file uploads in Vue](https://www.digitalocean.com/community/tutorials/how-to-handle-file-uploads-in-vue-2)
 * [Flask and MongoDB tutorial](https://www.youtube.com/watch?v=o8jK5enu4L4)
 * [API Development Course](https://www.youtube.com/watch?v=0sOvCWFmrtA)
