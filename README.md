@@ -78,8 +78,8 @@ pip install -r requirements.txt
 
 **Run server:** 
 ```
-cd api
-python server.py
+cd api/routes
+python app.py
 ```
 
 ## Infrastructure
