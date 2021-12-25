@@ -1,23 +1,33 @@
 # Money Game
 
-## Minimum Viable Product
-This app was only designed to be used on mobile, not on desktop.
+## Purpose of this game
+
+The purpose of this simple game is to allow me to get familiar with api development and NoSQL database design.
+
+## How the game works
+
+Upon signing in to the game, users can press a button labelled `Work` to earn coins. Users can then use the coins they have earned to buy things from a store. Upon buying an item from the store, the item will be added into the user's inventory, where they can choose to sell the item for coins. 
+
+The original motivation behind this game was crypto/NFT related. However, I wanted to keep the game as simple as possible so that I can focus on learning backend programming.
 
 **Frontend mock ups:**
+
+Note: This app was only designed to be used on mobile, not on desktop.
+
 <p align="center">
   <img src="./docs/images/frontend_mvp_normal_mockup.png" alt="frontend mockup normal users" height="450px">
   <img src="./docs/images/frontend_mvp_admin_mockup.png" alt="frontend mockup admin" height="450px">
   <img src="./docs/images/frontend_mvp_auth_mockup.png" alt="frontend mockup authentication" height="450px">
 </p>
 
-**Data:**
-* Authentication: unique username and password to signin
-* Money
-* Inventory: itemid, picture, quantity, sell price
-* Store: itemid, picture, buy price
+**Database Schema:**
+* **Authentication:** unique username and password to signin
+* **Money**
+* **Inventory:** itemid, picture, quantity, sell price
+* **Store:** itemid, picture, buy price
 
 <p align="center">
-  <img src="./docs/images/database_plan.png" alt="frontend mockup normal users" height="400px">
+  <img src="./docs/images/database_plan.png" alt="database schema" height="400px">
 </p>
 
 **Abstract backend API used by normal users:**
@@ -34,7 +44,7 @@ This app was only designed to be used on mobile, not on desktop.
 - [x] `/user`: POST method that username, password, returns userId of admin
 - [x] `/store`: GET method that gets all items in store
 - [x] `/storeItem`: POST method that uploads new item to store (picture, name, price, auto snag id)
-- [] `/storeItem` : DELETE method that deletes an item from store
+- [x] `/storeItem` : DELETE method that deletes an item from store
 
 ## Vue Project setup
 **Install dependencies:** `npm install`
@@ -91,6 +101,17 @@ python server.py
 * [render base64 image in vue](https://stackoverflow.com/questions/46492356/render-base64-image-in-vue-js)
 
 ## Reflections and Key Takeaways
+
+### Glossary
+| Label      | Meaning |
+| ----------- | ----------- |
+| Best Practice | Coding best practices, or good design principles I have learnt       |
+| Read up   | Topics I have read up about through the course of working on this project  |
+| School   | Concepts I have learnt in school that I managed to apply in this project |
+| Technical  | Low level technical details that I have learnt |
+| Concept   | General concepts that I have learnt |
+| Design Decision   | Design decisions that I have made in the course of this project |
+| Security Concern   | Security related considerations/discussions |
 
 **Best practice: Use the resource name as the api route name**
 
@@ -156,15 +177,6 @@ Used to forward requests from a web server (such as Apache or nginx) to a backen
 
 It is a collection of binary data stored as a single entity, usually is images, audio, or binary code. 
 
-img -> base64 -> blob 
-
-[Link](https://flutterq.com/how-to-display-binary-data-as-image-in-react/)
-
-```
-using fetch api, response.blob();
-<img src={URL.createObjectURL(responseData)} />
-```
-
 **Technical: Cross Origin Resource Sharing (CORS)**
 A HTTP header mechanism that allows a server to indicate which origins other than its own that a browser can load resources from. Browsers usually make a preflight request to the server to check that the server will permit the request.
 
@@ -172,12 +184,34 @@ A HTTP header mechanism that allows a server to indicate which origins other tha
 
 Originally, I was concerned with exposing the mongodb object id in url query (when building endpoint for deleting store items), but upon some reading, I found that the object id is based upon the time of creation of the document, hence the information is not sensitive. Also, [someone on quora](https://www.quora.com/What-if-any-are-the-security-risks-associated-with-exposing-a-MongoID-string-in-a-URL) mentioned that trying to hide the object id is a kind of "security through obscurity" practice, which we should not be depending on. We should instead focus on access control to the database.
 
-### Glossary
+**Best Practice: MongoDB Schema Design**
+- For relational, focus on: Don't duplicate data
+- For NoSQL, no rules, no process, no algorithm, consider how to store data and query performance. (Focus on designing a schema uniquely suited to your application)
+- Embedding vs Referencing. Embedding is storing object within another object (same as join)
+  - Pros of embedding: retrieve all data in a single query, can avoid expensive joins and can update all data with a single atomic operation.
+  - Cons of embedding: large docs means more overhead, if you dont need all data at once, dont embed. 16MB document size limit
+  - Pros of referencing: smaller docs, less likely to reach 16mb limit, no duplication of data, infrequently accessed data not accessed on every query
+  - Cons of referencing: More queries required to retrieve all data
+- Favor embedding unless there is a compelling reason not to. (Needing to access an object on its own is a compelling reason not to embed it)
+- Avoid joins (embedding?)
+- Arrays should not grow without bound
+- One to one: Use key value pairs
+- One to few: Prefer embedding
+- One to many: Prefer referencing
+- One to squillions: Prefer referencing
 
-| Label      | Meaning |
-| ----------- | ----------- |
-| Best Practice | Coding best practices, or good design principles I have learnt       |
-| Read up   | Topics I have read up about through the course of working on this project  |
-| School   | Concepts I have learnt in school that I managed to apply in this project |
-| Technical  | Low level technical details that I have learnt |
-| Concept   | General concepts that I have learnt |
+**Design Decision: Embedding for inventory items**
+
+After learning about best practices for MongoDB Schema design, I decided to use embedding for inventory items.
+
+Pros:
+- Can retrieve all data in a single query
+- Shouldnt have too many items in the inventory
+- We wont have to retrieve items 1 by 1 so there is not much incentive to use referencing.
+
+Cons: 
+- might exceed 16MB document limit (especially since we are storing images inside the JSON too)
+  - 0.2KB for a document with imgUrl
+  - about 50KB for a document with base64Img, depends on size of image I think
+  - Can get around this by compressing the image before storing
+
