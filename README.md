@@ -35,10 +35,10 @@ Note: This app was only designed to be used on mobile, not on desktop.
 - [x] `/user`: POST method that takes unique username, password, and creates a user in the database, returns userId
 - [x] `/user`: POST method that username, password, returns userId
 - [x] `/money`: POST/UPDATE method that takes userId, and updated money
-- [] `/inventory`: GET method that gets all items in inventory
+- [ ] `/inventory`: GET method that gets all items in inventory
 - [x] `/store`: GET method that gets all items in store
-- [] `/buyItem`: POST/UPDATE method -> decrement money; if item in inventory, incrememnt quantity by 1; else, add item;
-- [] `/sellItem`: POST/UPDATE method -> decrement quantity; incrememnt money
+- [ ] `/buyItem`: POST/UPDATE method -> decrement money; if item in inventory, incrememnt quantity by 1; else, add item;
+- [ ] `/sellItem`: POST/UPDATE method -> decrement quantity; incrememnt money
 
 **Abstract backend API used by admin:**
 - [x] `/user`: POST method that username, password, returns userId of admin
@@ -92,7 +92,7 @@ python server.py
 **Additional Libraries/Packages used:**
 * [Vue 3D Carousel](https://github.com/wlada/vue-carousel-3d)
 
-**Tutorials referred to:**
+**References:**
 * [Handling file uploads in Vue](https://www.digitalocean.com/community/tutorials/how-to-handle-file-uploads-in-vue-2)
 * [Flask and MongoDB tutorial](https://www.youtube.com/watch?v=o8jK5enu4L4)
 * [API Development Course](https://www.youtube.com/watch?v=0sOvCWFmrtA)
