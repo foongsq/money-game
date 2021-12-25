@@ -25,16 +25,16 @@ This app was only designed to be used on mobile, not on desktop.
 - [x] `/user`: POST method that takes unique username, password, and creates a user in the database, returns userId
 - [x] `/user`: POST method that username, password, returns userId
 - [x] `/money`: POST/UPDATE method that takes userId, and updated money
-- [] `/inventory`: GET method that gets all items in inventory
+- [ ] `/inventory`: GET method that gets all items in inventory
 - [x] `/store`: GET method that gets all items in store
-- [] `/buyItem`: POST/UPDATE method -> decrement money; if item in inventory, incrememnt quantity by 1; else, add item;
-- [] `/sellItem`: POST/UPDATE method -> decrement quantity; incrememnt money
+- [ ] `/buyItem`: POST/UPDATE method -> decrement money; if item in inventory, incrememnt quantity by 1; else, add item;
+- [ ] `/sellItem`: POST/UPDATE method -> decrement quantity; incrememnt money
 
 **Abstract backend API used by admin:**
 - [x] `/user`: POST method that username, password, returns userId of admin
 - [x] `/store`: GET method that gets all items in store
 - [x] `/storeItem`: POST method that uploads new item to store (picture, name, price, auto snag id)
-- [] `/storeItem` : DELETE method that deletes an item from store
+- [x] `/storeItem` : DELETE method that deletes an item from store
 
 ## Vue Project setup
 **Install dependencies:** `npm install`
