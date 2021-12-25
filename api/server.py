@@ -5,6 +5,7 @@ import json
 from bson.objectid import ObjectId
 from pymongo.collection import ReturnDocument
 import base64
+from passlib.hash import pbkdf2_sha256
 
 # Helper methods
 
@@ -22,7 +23,7 @@ def insert_item_into_store(item):
 
 # Create a flask app
 app = Flask(__name__)
-cors = CORS(app, resources={r"/*": { "origins": "http://localhost:8080"}})
+cors = CORS(app, resources={r"/*": { "origins": "http://localhost:8080"}}) # allow frontend to access API
 
 # Connect to mongodb (always wrap connection in try except block)
 try:
@@ -39,19 +40,26 @@ except:
 ########################################
 # To add a new user (with username, password, and 0 money, 
 # and empty inventory) into the database
-# TODO: Make sure username is not already in the database
 @app.route("/user", methods=["POST"])
 def signup():
   try:
+    # Hash password
+    hashed_password = pbkdf2_sha256.hash(request.form["password"])
+    
+    # Ensure that username is unique
+    existing_users_with_username = list(db.users.find({"username": request.form["username"]}))
+    if (len(existing_users_with_username) > 0):
+      return Response(response=json.dumps({"message": "Username already exists in database"}), status=409, mimetype="application/json")
+    
     user = {
       "username": request.form["username"], 
-      "password": request.form["password"],
+      "password": hashed_password,
       "money": 0,
       "inventory": [],
     }
+
     inserted_item = insert_item_into_users(user)
-    # for attr in dir(db_response):
-      # print(attr)
+
     return Response(
       response=json.dumps( # send object as a json
         {
@@ -66,34 +74,35 @@ def signup():
       mimetype="application/json")
   except Exception as ex:
     print(ex)
+    return Response(response=json.dumps({"message": "User cannot be created"}), status=500, mimetype="application/json")
 
 ########################################
 # To get all user's data from the database
 @app.route("/user", methods=["GET"])
 def signin():
   try:
-    data = list(db.users.find({"username": request.form["username"]}))
+    input_password = request.form["password"]
+    user = db.users.find_one({"username": request.form["username"]})
+    
+    if (user == None):
+      return Response(response=json.dumps({"message": "Username incorrect"}), status=403, mimetype="application/json")
+    
+    if (not pbkdf2_sha256.verify(input_password,  user["password"])):
+      return Response(response=json.dumps({"message": "Password incorrect"}), status=403, mimetype="application/json")
+
     return Response(
       response=json.dumps( # send object as a json
         {
-          "username": data[0]["username"],
-          "password": data[0]["password"],
-          "money": data[0]["money"],
-          "inventory": data[0]["inventory"],
+          "username": user["username"],
+          "money": user["money"],
+          "inventory": user["inventory"],
         }
       ), 
       status=200, 
       mimetype="application/json")
   except Exception as ex:
     print(ex)
-    return Response(
-      response=json.dumps( # send object as a json
-        {
-          "message": "User cannot be retrieved", 
-        }
-      ), 
-      status=500, 
-      mimetype="application/json")
+    return Response(response=json.dumps({"message": "User cannot be retrieved"}), status=500, mimetype="application/json")
 
 ########################################
 # To update a user's money
@@ -119,8 +128,7 @@ def add_money():
       mimetype="application/json")
   except Exception as ex:
     print(ex)
-    return Response(
-      response=json.dumps({"message": "Money cannot be updated"}), status=500, mimetype="application/json")
+    return Response(response=json.dumps({"message": "Money cannot be updated"}), status=500, mimetype="application/json")
 
 ########################################
 # To add an item to the store
@@ -148,8 +156,7 @@ def add_store_item():
       mimetype="application/json")
   except Exception as ex:
     print(ex)
-    return Response(
-      response=json.dumps({"message": "Store item cannot be added"}), status=500, mimetype="application/json")
+    return Response(response=json.dumps({"message": "Store item cannot be added"}), status=500, mimetype="application/json")
 
 ########################################
 # To get all items in the store
@@ -186,6 +193,34 @@ def delete_store_item(id):
   except Exception as ex:
     print(ex)
     return Response(response=json.dumps({"message": "Store item cannot be deleted"}), status=500, mimetype="application/json")
+
+########################################
+# To buy an item from the store, and add it into user's inventory
+# @app.route("/inventoryItem/buy/<id>", methods=["POST"])
+# def buy_inventory_item(id):
+#   try:
+#     img = request.files["img"]
+#     b64_img = base64.b64encode(img.read()).decode('utf-8')
+#     storeItem = {
+#       "itemName": request.form["itemName"],
+#       "base64Img": b64_img, 
+#       "buyPrice": request.form["buyPrice"],
+#     }
+#     inserted_item = insert_item_into_store(storeItem)
+#     return Response(
+#       response=json.dumps( # send object as a json
+#         {
+#           "message": "Store item succesfully added", 
+#           "itemName": f"{inserted_item['itemName']}",
+#           "base64Img": f"{inserted_item['base64Img']}",
+#           "buyPrice": f"{inserted_item['buyPrice']}",
+#         }
+#       ), 
+#       status=200, 
+#       mimetype="application/json")
+#   except Exception as ex:
+#     print(ex)
+#     return Response(response=json.dumps({"message": "Store item cannot be added"}), status=500, mimetype="application/json")
 
 ########################################
 # Run your flask app on port 80

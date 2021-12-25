@@ -218,3 +218,7 @@ Cons:
 **Design Decision: Schema Validation on server side**
 
 Upon some reading, I decided not to focus too much on schema validation on the server side for this project. This is because input validation will already be done on the client side for user experience purposes and the client side will be sending the correct data to the API. I am able to do this since this is a small project and I am the only developer involved. However, if there were separate people working on the frontend and backend, I would definitely prioritize schema validation on server side more.
+
+**Security concern: Storing passwords in plaintext**
+
+Storing passwords in plaintext is really bad and violates our users privacy as anyone who has access to the database can see the passwords. Hence, we have to hash the passwords before storing it into our database. I chose to use the passlib library which has no known weaknesses at the time of writing. (Use `.verify()` method instead of `==` to compare whether password matches to prevent timing attacks)
