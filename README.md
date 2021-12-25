@@ -46,6 +46,10 @@ Note: This app was only designed to be used on mobile, not on desktop.
 - [x] `/storeItem`: POST method that uploads new item to store (picture, name, price, auto snag id)
 - [x] `/storeItem` : DELETE method that deletes an item from store
 
+**Backend features:**
+- hashed passwords
+- enforce unique usernames
+
 ## Vue Project setup
 **Install dependencies:** `npm install`
 
@@ -222,3 +226,7 @@ Upon some reading, I decided not to focus too much on schema validation on the s
 **Security concern: Storing passwords in plaintext**
 
 Storing passwords in plaintext is really bad and violates our users privacy as anyone who has access to the database can see the passwords. Hence, we have to hash the passwords before storing it into our database. I chose to use the passlib library which has no known weaknesses at the time of writing. (Use `.verify()` method instead of `==` to compare whether password matches to prevent timing attacks)
+
+**Best Practice: Use of Blueprints to modularize backend code**
+
+[Useful explanation of blueprints](https://realpython.com/flask-blueprint/)
