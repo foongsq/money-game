@@ -215,3 +215,6 @@ Cons:
   - about 50KB for a document with base64Img, depends on size of image I think
   - Can get around this by compressing the image before storing
 
+**Design Decision: Schema Validation on server side**
+
+Upon some reading, I decided not to focus too much on schema validation on the server side for this project. This is because input validation will already be done on the client side for user experience purposes and the client side will be sending the correct data to the API. I am able to do this since this is a small project and I am the only developer involved. However, if there were separate people working on the frontend and backend, I would definitely prioritize schema validation on server side more.
