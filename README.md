@@ -95,6 +95,7 @@ python app.py
 
 **Additional Libraries/Packages used:**
 * [Vue 3D Carousel](https://github.com/wlada/vue-carousel-3d)
+* [PyJWT](https://pyjwt.readthedocs.io/en/stable/usage.html)
 
 **References:**
 * [Handling file uploads in Vue](https://www.digitalocean.com/community/tutorials/how-to-handle-file-uploads-in-vue-2)
@@ -230,3 +231,9 @@ Storing passwords in plaintext is really bad and violates our users privacy as a
 **Best Practice: Use of Blueprints to modularize backend code**
 
 [Useful explanation of blueprints](https://realpython.com/flask-blueprint/)
+
+**Technical: Using JWT token for authentication**
+
+When someone logs in successfully, server will sign a jwt token and send it to the client. Client can then send that jwt token together with requests so that they can get access to routes that require authentication. Server will verify that token is valid, then send data/resources back.
+
+A jwt token is actually made of header, payload and secret. Payload is somewhat of a hash of certain info we put in, eg user id, admin role etc... and then it is signed with a secret key that only the server should know. Signature prevents tampering because when attacker changes role, signature will no longer match, and they need the secret key in order to sign it properly.
