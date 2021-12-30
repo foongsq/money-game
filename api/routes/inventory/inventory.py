@@ -2,7 +2,6 @@ import json
 from bson.objectid import ObjectId
 from flask import Blueprint, Response, request
 from pymongo.collection import ReturnDocument
-from .. import utils
 from .. import oauth2
 from routes.database import db
 

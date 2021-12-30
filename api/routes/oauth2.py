@@ -1,9 +1,8 @@
 import jwt
 import json
 import os
-from flask import Response, request
+from flask import Response
 from bson.objectid import ObjectId
-from functools import wraps
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from routes.database import db
