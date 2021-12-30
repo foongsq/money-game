@@ -1,10 +1,15 @@
-from flask import Blueprint, Response, request
 import json
+import os
+from flask import Blueprint, Response, request
 from passlib.hash import pbkdf2_sha256
-
+from dotenv import load_dotenv
+from datetime import datetime, timedelta
 from .. import utils
 from .. import oauth2
 from routes.database import db
+
+load_dotenv()
+JWT_EXPIRY_MIN = os.getenv('JWT_EXPIRY_MIN')
 
 auth_blueprint = Blueprint('auth_blueprint', __name__)
 
@@ -64,10 +69,14 @@ def signin():
       return Response(response=json.dumps({"message": "Password incorrect"}), status=403, mimetype="application/json")
 
     # Create jwt access token with objectId of user document
-    token = oauth2.create_access_token({"_id": str(user["_id"])}) # convert objectId to string since objectId is not json serializable
-    
-    return Response(
-      response=json.dumps({"token": token}), status=200, mimetype="application/json")
+    access_token = oauth2.create_access_token({"_id": str(user["_id"])}) # convert objectId to string since objectId is not json serializable
+    token = access_token["token"]
+    expiry = access_token["expiry"]
+
+    # Attach token as cookie
+    res = Response(response=json.dumps({"message": "Token successfully created"}), status=200, mimetype="application/json")
+    res.set_cookie(key="jwt", value=token, expires=expiry, httponly=True) # cookie expiry same as jwt token expiry
+    return res
   except Exception as ex:
     print(ex)
     return Response(response=json.dumps({"message": "User cannot be retrieved"}), status=500, mimetype="application/json")
