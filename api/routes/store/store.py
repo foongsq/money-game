@@ -48,9 +48,10 @@ def get_all_store_items():
 
 ########################################
 # To get delete an item from the store
-@store.route("/storeItem/<id>", methods=["DELETE"])
-def delete_store_item(id):
+@store.route("/storeItem", methods=["DELETE"])
+def delete_store_item():
   try:
+    id = request.form["itemId"]
     deleted_item = db.store.find_one_and_delete({"_id": ObjectId(id)})
     return Response(
       response=json.dumps(
