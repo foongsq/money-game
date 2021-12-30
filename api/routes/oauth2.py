@@ -40,9 +40,9 @@ def token_required(f):
 def create_access_token(data: dict):
   to_encode = data.copy()
 
-  expire = datetime.now() + timedelta(minutes=JWT_EXPIRY_MIN)
+  expire = datetime.now() + timedelta(minutes=int(JWT_EXPIRY_MIN))
   to_encode.update({"exp": expire})
 
-  encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=[JWT_ALGORITHM])
+  encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
   return encoded_jwt
 

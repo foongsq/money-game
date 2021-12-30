@@ -237,3 +237,10 @@ Storing passwords in plaintext is really bad and violates our users privacy as a
 When someone logs in successfully, server will sign a jwt token and send it to the client. Client can then send that jwt token together with requests so that they can get access to routes that require authentication. Server will verify that token is valid, then send data/resources back.
 
 A jwt token is actually made of header, payload and secret. Payload is somewhat of a hash of certain info we put in, eg user id, admin role etc... and then it is signed with a secret key that only the server should know. Signature prevents tampering because when attacker changes role, signature will no longer match, and they need the secret key in order to sign it properly.
+
+The reason why we need JWT tokens is to prevent us from having to collect username and password every time someone wants to request for a resource. We work around it by using a session id. but session id doesnt scale because if we have multiple servers behind a load balancer, the different servers wont know what session ids other servers issued.
+
+[Good explanation about JWT tokens](https://medium.com/swlh/why-do-we-need-the-json-web-token-jwt-in-the-modern-web-8490a7284482)
+
+**Technical: OAuth2.0**
+

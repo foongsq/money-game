@@ -22,7 +22,7 @@ def add_store_item():
     }
     inserted_item = utils.insert_item_into_store(storeItem)
     return Response(
-      response=json.dumps( # send object as a json
+      response=json.dumps(
         {
           "message": "Store item succesfully added", 
           "itemName": f"{inserted_item['itemName']}",
