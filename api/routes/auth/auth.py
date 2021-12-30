@@ -53,7 +53,7 @@ def signup():
 
 ########################################
 # To get jwt access token
-@auth.route("/user", methods=["GET"])
+@auth.route("/session", methods=["POST"])
 def signin():
   try:
     input_password = request.form["password"]
@@ -79,3 +79,41 @@ def signin():
   except Exception as ex:
     print(ex)
     return Response(response=json.dumps({"message": "User cannot be retrieved"}), status=500, mimetype="application/json")
+
+########################################
+# To get all user data for user who is signed in
+@auth.route("/session", methods=["GET"])
+def get_user():
+  try:
+    jwt = request.cookies.get("jwt")
+
+    # Check if jwt token in cookie exists
+    if (jwt is None or jwt is ''):
+      return Response(response=json.dumps({"message": "User is not logged in"}), status=401, mimetype="application/json")
+    
+    current_user = oauth2.verify_access_token(jwt)
+    current_user["_id"] = str(current_user["_id"]) # convert objectId to string to allow it to be JSON serializable
+
+    return Response(response=json.dumps({"data": current_user}), status=200, mimetype="application/json")
+  except Exception as ex:
+    print(ex)
+    return Response(response=json.dumps({"message": "User cannot be retrieved"}), status=500, mimetype="application/json")
+
+########################################
+# To sign a user out, and delete jwt cookie
+@auth.route("/session", methods=["DELETE"])
+def signout():
+  try:
+    jwt = request.cookies.get("jwt")
+
+    # Check if jwt token in cookie exists
+    if (jwt is None or jwt is ''):
+      return Response(response=json.dumps({"message": "User is not logged in"}), status=401, mimetype="application/json")
+
+    res = Response(response=json.dumps({"message": "Token successfully deleted, user logged out."}), status=200, mimetype="application/json")
+    res.set_cookie(key='jwt', value='')
+
+    return res
+  except Exception as ex:
+    print(ex)
+    return Response(response=json.dumps({"message": "User cannot be logged out"}), status=500, mimetype="application/json")

@@ -1,6 +1,8 @@
-from flask import Blueprint, Response, request
 import json
+from flask import Blueprint, Response, request
+from bson.objectid import ObjectId
 from pymongo.collection import ReturnDocument
+from .. import oauth2
 from routes.database import db
 
 money = Blueprint('money', __name__)
@@ -10,19 +12,27 @@ money = Blueprint('money', __name__)
 @money.route("/money", methods=["POST"])
 def add_money():
   try:
+    jwt = request.cookies.get("jwt")
+
+    # Check if jwt token in cookie exists
+    if (jwt is None or jwt is ''):
+      return Response(response=json.dumps({"message": "User is not logged in"}), status=401, mimetype="application/json")
+    
+    current_user = oauth2.verify_access_token(jwt)
+    id = ObjectId(current_user["_id"])
+    
     updated_item = db.users.find_one_and_update(
-      {"username": request.form["username"]},
+      {"_id": id},
       {"$set": { "money": request.form["money"]}},
       return_document=ReturnDocument.AFTER
     )
     return Response(
       response=json.dumps( # send object as a json
         {
-          "message": "Money succesfully updated", 
-          "username": f"{updated_item['username']}",
-          "password": f"{updated_item['password']}",
-          "money": f"{updated_item['money']}",
-          "inventory": f"{updated_item['inventory']}"
+          "username": updated_item['username'],
+          "password": updated_item['password'],
+          "money": updated_item['money'],
+          "inventory": updated_item['inventory']
         }
       ), 
       status=200, 

@@ -16,6 +16,11 @@ SELL_ACTION = "sell"
 def get_all_inventory_items():
   try:
     jwt = request.cookies.get("jwt")
+
+    # Check if jwt token in cookie exists
+    if (jwt is None or jwt is ''):
+      return Response(response=json.dumps({"message": "User is not logged in"}), status=401, mimetype="application/json")
+
     current_user = oauth2.verify_access_token(jwt)
 
     return Response(response=json.dumps({"inventory": current_user["inventory"]}), status=200, mimetype="application/json")
@@ -29,6 +34,11 @@ def buy_inventory_item(store_item_id):
   try:
     # Fetch user's inventory
     jwt = request.cookies.get("jwt")
+
+    # Check if jwt token in cookie exists
+    if (jwt is None or jwt is ''):
+      return Response(response=json.dumps({"message": "User is not logged in"}), status=401, mimetype="application/json")
+
     current_user = oauth2.verify_access_token(jwt)
     inventory = current_user["inventory"]
 
@@ -91,6 +101,11 @@ def sell_inventory_item(store_item_id):
   try:
     # Retrieve user
     jwt = request.cookies.get("jwt")
+
+    # Check if jwt token in cookie exists
+    if (jwt is None or jwt is ''):
+      return Response(response=json.dumps({"message": "User is not logged in"}), status=401, mimetype="application/json")
+
     current_user = oauth2.verify_access_token(jwt)
     inventory = current_user["inventory"]
 

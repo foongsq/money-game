@@ -1,9 +1,16 @@
 import json
 import base64
+import os
 from flask import Blueprint, Response, request
 from bson.objectid import ObjectId
+from dotenv import load_dotenv
 from .. import utils
+from .. import oauth2
 from routes.database import db
+
+load_dotenv()
+
+ADMIN_ID = os.getenv('ADMIN_ID')
 
 store = Blueprint('store', __name__)
 
@@ -12,6 +19,17 @@ store = Blueprint('store', __name__)
 @store.route("/storeItem", methods=["POST"])
 def add_store_item():
   try:
+    # Check if jwt token in cookie exists
+    jwt = request.cookies.get("jwt")
+    if (jwt is None or jwt is ''):
+      return Response(response=json.dumps({"message": "Admin is not logged in"}), status=401, mimetype="application/json")
+    
+    current_user = oauth2.verify_access_token(jwt)
+    
+    # Checks if current user is admin
+    if (current_user["_id"] != ADMIN_ID):
+      return Response(response=json.dumps({"message": "Unauthorized access, only admins can access this resource"}), status=401, mimetype="application/json")
+
     img = request.files["img"]
     b64_img = base64.b64encode(img.read()).decode('utf-8')
     storeItem = {
@@ -51,6 +69,17 @@ def get_all_store_items():
 @store.route("/storeItem", methods=["DELETE"])
 def delete_store_item():
   try:
+    # Check if jwt token in cookie exists
+    jwt = request.cookies.get("jwt")
+    if (jwt is None or jwt is ''):
+      return Response(response=json.dumps({"message": "Admin is not logged in"}), status=401, mimetype="application/json")
+    
+    current_user = oauth2.verify_access_token(jwt)
+    
+    # Checks if current user is admin
+    if (current_user["_id"] != ADMIN_ID):
+      return Response(response=json.dumps({"message": "Unauthorized access, only admins can access this resource"}), status=401, mimetype="application/json")
+    
     id = request.form["itemId"]
     deleted_item = db.store.find_one_and_delete({"_id": ObjectId(id)})
     return Response(
