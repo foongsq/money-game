@@ -27,11 +27,12 @@ def add_store_item():
     current_user = oauth2.verify_access_token(jwt)
     
     # Checks if current user is admin
-    if (current_user["_id"] != ADMIN_ID):
+    if (str(current_user["_id"]) != ADMIN_ID):
       return Response(response=json.dumps({"message": "Unauthorized access, only admins can access this resource"}), status=401, mimetype="application/json")
 
     img = request.files["img"]
     b64_img = base64.b64encode(img.read()).decode('utf-8')
+    
     storeItem = {
       "itemName": request.form["itemName"],
       "base64Img": b64_img, 
@@ -77,18 +78,18 @@ def delete_store_item():
     current_user = oauth2.verify_access_token(jwt)
     
     # Checks if current user is admin
-    if (current_user["_id"] != ADMIN_ID):
+    if (str(current_user["_id"]) != ADMIN_ID):
       return Response(response=json.dumps({"message": "Unauthorized access, only admins can access this resource"}), status=401, mimetype="application/json")
     
     id = request.form["itemId"]
     deleted_item = db.store.find_one_and_delete({"_id": ObjectId(id)})
+    print(deleted_item)
     return Response(
       response=json.dumps(
         {
-          "message": "Store item successfully deleted",
-          "_id": deleted_item['_id'],
+          "_id": str(deleted_item['_id']),
           "itemName": deleted_item['itemName'],
-          "buyPrice": deleted_item['itemName'],
+          "buyPrice": deleted_item['buyPrice'],
         }), 
       status=200, mimetype="application/json")
   except Exception as ex:
