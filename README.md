@@ -74,9 +74,9 @@ I have noticed that most of the API calls are quite straight forward, and the on
 
 ### Abstract backend API used by normal users
 - [x] `/user`: POST method that takes unique username, password, and creates a user in the database, returns userId
-- [x] `/user`: GET method that takes username, password, returns userId
-- [ ] `/user`: GET method that uses cookie info to fetch user info
-- [ ] `/user`: sign out, to delete jwt cookie
+- [x] `/session`: POST method that takes username, password, returns userId
+- [ ] `/session`: GET method that uses cookie info to fetch user info
+- [ ] `/session`: DELETE method to sign out, to delete jwt cookie
 - [x] `/money`: POST/UPDATE method that takes userId, and updated money
 - [x] `/inventory`: GET method that gets all items in inventory
 - [x] `/store`: GET method that gets all items in store
