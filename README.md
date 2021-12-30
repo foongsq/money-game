@@ -50,6 +50,15 @@ I have noticed that most of the API calls are quite straight forward, and the on
 - Isolate the re-rendering of components to only the sections with changes
 - Cache store items (the benefit of this is if someone signs in as a normal user, then sign in as admin, it will be faster for them as they dont have to fetch the store items again. But I think the benefits of this outweighs the cost of implementation and it doesn't make a lot of sense to do this optimization.)
 
+### CSS Classes Documentation
+I decided to document the layout of my CSS classes because I used to always spend a lot of time figuring out the layout of my css classes again and again. I think that documenting it like that can help me save a lot of time when styling my components.
+
+<p align="center">
+  <img src="./docs/images/dashboard_css.png" alt="dashboard css" height="450px">
+  <img src="./docs/images/admin_css.png" alt="admin css" height="450px">
+  <img src="./docs/images/authentication_css.png" alt="authentication css" height="450px">
+</p>
+
 ### Vue Project setup
 **Install dependencies:** `npm install`
 
@@ -75,8 +84,8 @@ I have noticed that most of the API calls are quite straight forward, and the on
 ### Abstract backend API used by normal users
 - [x] `/user`: POST method that takes unique username, password, and creates a user in the database, returns userId
 - [x] `/session`: POST method that takes username, password, returns userId
-- [ ] `/session`: GET method that uses cookie info to fetch user info
-- [ ] `/session`: DELETE method to sign out, to delete jwt cookie
+- [x] `/session`: GET method that uses cookie info to fetch user info
+- [x] `/session`: DELETE method to sign out, to delete jwt cookie
 - [x] `/money`: POST/UPDATE method that takes userId, and updated money
 - [x] `/inventory`: GET method that gets all items in inventory
 - [x] `/store`: GET method that gets all items in store
