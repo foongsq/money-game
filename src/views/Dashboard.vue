@@ -131,7 +131,7 @@ export default {
     }
   },
   created: async function() {
-    await axios.get("http://localhost:80/store").then((response) => {
+    await axios.get("/api/store").then((response) => {
       this.store = response.data;
       console.log("this.store", this.store);
     }, (error) => {

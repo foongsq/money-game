@@ -242,5 +242,30 @@ The reason why we need JWT tokens is to prevent us from having to collect userna
 
 [Good explanation about JWT tokens](https://medium.com/swlh/why-do-we-need-the-json-web-token-jwt-in-the-modern-web-8490a7284482)
 
+**Best practice: Never store jwt tokens inside localStorage of browser**
+
+This is because localStorage or sessionStorage is accessible by any script inside your page, so a XSS attack can give a hacker access to your token, and compromise authenticity. Instead, store it in a httpOnly cookie, which is a special kind of cookie that is only sent in http reqests to the server, and it is **never accessible** from javascript running in the browser.
+
+[JWT best practices](https://blog.logrocket.com/jwt-authentication-best-practices/)
+
+**Technical: Cookies**
+
+A cookie is a piece of data that your web server can set, that will be then stored by the user's web browser and sent back to the server on any future requests that browser makes to the same server as long as the cookie is valid and applicable to the request being made. Cookies are a **state management** mechanism for HTTP.
+
+Need to use a HTTP proxy also because since we are now sending the token in a cookie, we need to run the 2 apps on the same port. (because cookies can only go to origins from which they came)
+
+[Cookie explanation](https://stackoverflow.com/questions/39810741/how-to-store-a-jwt-token-inside-an-http-only-cookie)
+[Cookie implementation](https://medium.com/@ryanchenkie_40935/react-authentication-how-to-store-jwt-in-a-cookie-346519310e81)
+[Set up HTTP Proxy for Vue](https://medium.com/bb-tutorials-and-thoughts/vue-js-how-to-proxy-to-backend-server-a562bad965eb)
+
+**Technical: Babel**
+
+Babel is a JavaScript compiler. Babel is a toolchain that is mainly used to convert ECMAScript 2015+ code into a backwards compatible version of JavaScript in current and older browsers or environments. Here are the main things Babel can do for you:
+- Transform syntax
+- Polyfill features that are missing in your target environment (through a third-party polyfill such as core-js)
+- Source code transformations (codemods)
+
+[Source](https://babeljs.io/docs/en/#babel-is-a-javascript-compiler)
+
 **Technical: OAuth2.0**
 
