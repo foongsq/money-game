@@ -3,7 +3,7 @@
     <div class="inventoryItem">
       <img class="itemImg" :src='"../assets/chips.jpg"' height="400" width="400"/>
       <p class="itemName">{{itemName}}</p>
-      <p class="quantity">{{quantity}}</p>
+      <p class="quantity"><b>Quantity:</b> {{quantity}}</p>
     </div>
     <div class="sellPriceButton">
       <p>Sell for</p>
@@ -65,15 +65,11 @@ export default {
   margin: 0.5rem 0 0 0;
 }
 
-/* Hardcode position of quantity label */
 .quantity {
   background: orange;
   font-size: 0.75rem;
   padding: 0.25rem;
-  border-radius: 50%;
-  position: absolute;
-  left: 5%;
-  top: 5%;
+  margin-top: 0.25rem;
 }
 
 /* Make coin image round and set max height/width */
