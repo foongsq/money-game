@@ -153,7 +153,6 @@ export default {
   justify-content: space-between;
   height: 5vh;
   margin-top: 0.5rem;
-  border:1px solid red;
 }
 
 /* Need to flex in order to be able to center vertically using margin */
