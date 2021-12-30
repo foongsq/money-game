@@ -24,3 +24,4 @@ pnpm-debug.log*
 # Backend files
 /api/Lib/site-packages
 __pycache__/
+.env
