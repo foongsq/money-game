@@ -11,7 +11,7 @@
         </div>
         <div v-if="!newItemImage" class="dropbox">
           <input type="file" @change="onImageChange($event.target.files)"
-            accept="image/*" class="input-file">
+            accept="image/*" class="fileInput">
           <p v-if="isSaving">
             Uploading {{ fileCount }} files...
           </p>
@@ -156,7 +156,7 @@ export default {
   cursor: pointer;
 }
 
-.input-file {
+.fileInput {
   opacity: 0; /* invisible but it's there! */
   width: 100%;
   height: 100%;
