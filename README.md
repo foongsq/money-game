@@ -35,10 +35,10 @@ Note: This app was only designed to be used on mobile, not on desktop.
 - [x] `/user`: POST method that takes unique username, password, and creates a user in the database, returns userId
 - [x] `/user`: POST method that username, password, returns userId
 - [x] `/money`: POST/UPDATE method that takes userId, and updated money
-- [ ] `/inventory`: GET method that gets all items in inventory
+- [x] `/inventory`: GET method that gets all items in inventory
 - [x] `/store`: GET method that gets all items in store
-- [ ] `/buyItem`: POST/UPDATE method -> decrement money; if item in inventory, incrememnt quantity by 1; else, add item;
-- [ ] `/sellItem`: POST/UPDATE method -> decrement quantity; incrememnt money
+- [x] `/buyItem`: POST/UPDATE method -> decrement money; if item in inventory, increment quantity by 1; else, add item;
+- [ ] `/sellItem`: POST/UPDATE method -> decrement quantity; increment money
 
 **Abstract backend API used by admin:**
 - [x] `/user`: POST method that username, password, returns userId of admin

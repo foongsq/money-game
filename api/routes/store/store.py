@@ -23,14 +23,12 @@ def add_store_item():
     return Response(
       response=json.dumps(
         {
-          "message": "Store item succesfully added", 
-          "itemName": f"{inserted_item['itemName']}",
-          "base64Img": f"{inserted_item['base64Img']}",
-          "buyPrice": f"{inserted_item['buyPrice']}",
+          "itemName": inserted_item['itemName'],
+          "buyPrice": inserted_item['buyPrice'],
+          "base64Img": inserted_item['base64Img'],
         }
       ), 
-      status=200, 
-      mimetype="application/json")
+      status=200, mimetype="application/json")
   except Exception as ex:
     print(ex)
     return Response(response=json.dumps({"message": "Store item cannot be added"}), status=500, mimetype="application/json")
@@ -43,10 +41,7 @@ def get_all_store_items():
     store_items = list(db.store.find())
     for item in store_items: # convert object id to string since object id is not json serializable
       item["_id"] = str(item["_id"])
-    return Response(
-      response=json.dumps(store_items), 
-      status=200, 
-      mimetype="application/json")
+    return Response(response=json.dumps(store_items), status=200, mimetype="application/json")
   except Exception as ex:
     print(ex)
     return Response(response=json.dumps({"message": "Store items cannot be retrieved"}), status=500, mimetype="application/json")
@@ -61,12 +56,11 @@ def delete_store_item(id):
       response=json.dumps(
         {
           "message": "Store item successfully deleted",
-          "_id": f"{deleted_item['_id']}",
-          "itemName": f"{deleted_item['itemName']}",
-          "buyPrice": f"{deleted_item['itemName']}",
+          "_id": deleted_item['_id'],
+          "itemName": deleted_item['itemName'],
+          "buyPrice": deleted_item['itemName'],
         }), 
-      status=200, 
-      mimetype="application/json")
+      status=200, mimetype="application/json")
   except Exception as ex:
     print(ex)
     return Response(response=json.dumps({"message": "Store item cannot be deleted"}), status=500, mimetype="application/json")
