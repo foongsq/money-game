@@ -3,11 +3,11 @@ import json
 from pymongo.collection import ReturnDocument
 from routes.database import db
 
-money_blueprint = Blueprint('money_blueprint', __name__)
+money = Blueprint('money', __name__)
 
 ########################################
 # To update a user's money
-@money_blueprint.route("/money", methods=["POST"])
+@money.route("/money", methods=["POST"])
 def add_money():
   try:
     updated_item = db.users.find_one_and_update(

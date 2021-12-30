@@ -3,7 +3,6 @@ import os
 from flask import Blueprint, Response, request
 from passlib.hash import pbkdf2_sha256
 from dotenv import load_dotenv
-from datetime import datetime, timedelta
 from .. import utils
 from .. import oauth2
 from routes.database import db
@@ -11,12 +10,12 @@ from routes.database import db
 load_dotenv()
 JWT_EXPIRY_MIN = os.getenv('JWT_EXPIRY_MIN')
 
-auth_blueprint = Blueprint('auth_blueprint', __name__)
+auth = Blueprint('auth', __name__)
 
 ########################################
 # To add a new user (with username, password, and 0 money, 
 # and empty inventory) into the database
-@auth_blueprint.route("/user", methods=["POST"])
+@auth.route("/user", methods=["POST"])
 def signup():
   try:
     # Hash password
@@ -54,7 +53,7 @@ def signup():
 
 ########################################
 # To get jwt access token
-@auth_blueprint.route("/user", methods=["GET"])
+@auth.route("/user", methods=["GET"])
 def signin():
   try:
     input_password = request.form["password"]

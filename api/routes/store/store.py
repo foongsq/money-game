@@ -1,16 +1,15 @@
-from flask import Blueprint, Response, request
 import json
-from bson.objectid import ObjectId
 import base64
-
+from flask import Blueprint, Response, request
+from bson.objectid import ObjectId
 from .. import utils
 from routes.database import db
 
-store_blueprint = Blueprint('store_blueprint', __name__)
+store = Blueprint('store', __name__)
 
 ########################################
 # To add an item to the store
-@store_blueprint.route("/storeItem", methods=["POST"])
+@store.route("/storeItem", methods=["POST"])
 def add_store_item():
   try:
     img = request.files["img"]
@@ -38,7 +37,7 @@ def add_store_item():
 
 ########################################
 # To get all items in the store
-@store_blueprint.route("/store", methods=["GET"])
+@store.route("/store", methods=["GET"])
 def get_all_store_items():
   try:
     store_items = list(db.store.find())
@@ -54,7 +53,7 @@ def get_all_store_items():
 
 ########################################
 # To get delete an item from the store
-@store_blueprint.route("/storeItem/<id>", methods=["DELETE"])
+@store.route("/storeItem/<id>", methods=["DELETE"])
 def delete_store_item(id):
   try:
     deleted_item = db.store.find_one_and_delete({"_id": ObjectId(id)})
