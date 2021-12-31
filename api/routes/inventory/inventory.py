@@ -2,7 +2,8 @@ import json
 from bson.objectid import ObjectId
 from flask import Blueprint, Response, request
 from pymongo.collection import ReturnDocument
-from .. import oauth2
+from functools import wraps
+from .. import auth
 from routes.database import db
 
 inventory = Blueprint('inventory', __name__)
@@ -13,16 +14,9 @@ SELL_ACTION = "sell"
 ########################################
 # Get all items in a user's inventory
 @inventory.route("/inventory", methods=["GET"])
-def get_all_inventory_items():
+@auth.auth_required
+def get_all_inventory_items(current_user):
   try:
-    jwt = request.cookies.get("jwt")
-
-    # Check if jwt token in cookie exists
-    if (jwt is None or jwt is ''):
-      return Response(response=json.dumps({"message": "User is not logged in"}), status=401, mimetype="application/json")
-
-    current_user = oauth2.verify_access_token(jwt)
-
     return Response(response=json.dumps({"inventory": current_user["inventory"]}), status=200, mimetype="application/json")
   except Exception as ex:
     print(ex)
@@ -30,16 +24,9 @@ def get_all_inventory_items():
 
 ########################################
 # To buy an item from the store, and add it into user's inventory
-def buy_inventory_item(store_item_id):
+def buy_inventory_item(store_item_id, current_user):
   try:
     # Fetch user's inventory
-    jwt = request.cookies.get("jwt")
-
-    # Check if jwt token in cookie exists
-    if (jwt is None or jwt is ''):
-      return Response(response=json.dumps({"message": "User is not logged in"}), status=401, mimetype="application/json")
-
-    current_user = oauth2.verify_access_token(jwt)
     inventory = current_user["inventory"]
 
     # Fetch store item from db
@@ -97,16 +84,9 @@ def buy_inventory_item(store_item_id):
     return Response(response=json.dumps({"message": "Store item cannot be bought"}), status=500, mimetype="application/json")
 
 # Sells and item from user's inventory
-def sell_inventory_item(store_item_id):
+def sell_inventory_item(store_item_id, current_user):
   try:
-    # Retrieve user
-    jwt = request.cookies.get("jwt")
-
-    # Check if jwt token in cookie exists
-    if (jwt is None or jwt is ''):
-      return Response(response=json.dumps({"message": "User is not logged in"}), status=401, mimetype="application/json")
-
-    current_user = oauth2.verify_access_token(jwt)
+    # Retrieve user's inventory
     inventory = current_user["inventory"]
 
     # Look for item in user's inventory
@@ -156,9 +136,10 @@ def sell_inventory_item(store_item_id):
 
 # Checks whether item is to be bought or sold and calls respective helper function
 @inventory.route("/inventoryItem", methods=["POST"])
-def inventory_item():
+@auth.auth_required
+def inventory_item(current_user):
   store_item_id = request.form["itemId"]
   if (request.form["action"] == BUY_ACTION):
-    return buy_inventory_item(store_item_id)
+    return buy_inventory_item(store_item_id=store_item_id, current_user=current_user)
   elif (request.form["action"] == SELL_ACTION):
-    return sell_inventory_item(store_item_id)
+    return sell_inventory_item(store_item_id=store_item_id, current_user=current_user)
