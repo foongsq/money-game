@@ -4,18 +4,18 @@ from flask import Blueprint, Response, request
 from passlib.hash import pbkdf2_sha256
 from dotenv import load_dotenv
 from .. import utils
-from .. import oauth2
+from .. import auth
 from routes.database import db
 
 load_dotenv()
 JWT_EXPIRY_MIN = os.getenv('JWT_EXPIRY_MIN')
 
-auth = Blueprint('auth', __name__)
+user = Blueprint('user', __name__)
 
 ########################################
 # To add a new user (with username, password, and 0 money, 
 # and empty inventory) into the database
-@auth.route("/user", methods=["POST"])
+@user.route("/user", methods=["POST"])
 def signup():
   try:
     # Hash password
@@ -53,7 +53,7 @@ def signup():
 
 ########################################
 # To get jwt access token
-@auth.route("/session", methods=["POST"])
+@user.route("/session", methods=["POST"])
 def signin():
   try:
     input_password = request.form["password"]
@@ -68,7 +68,7 @@ def signin():
       return Response(response=json.dumps({"message": "Password incorrect"}), status=403, mimetype="application/json")
 
     # Create jwt access token with objectId of user document
-    access_token = oauth2.create_access_token({"_id": str(user["_id"])}) # convert objectId to string since objectId is not json serializable
+    access_token = auth.create_access_token({"_id": str(user["_id"])}) # convert objectId to string since objectId is not json serializable
     token = access_token["token"]
     expiry = access_token["expiry"]
 
@@ -82,16 +82,10 @@ def signin():
 
 ########################################
 # To get all user data for user who is signed in
-@auth.route("/session", methods=["GET"])
-def get_user():
+@user.route("/session", methods=["GET"])
+@auth.auth_required
+def get_user(current_user):
   try:
-    jwt = request.cookies.get("jwt")
-
-    # Check if jwt token in cookie exists
-    if (jwt is None or jwt is ''):
-      return Response(response=json.dumps({"message": "User is not logged in"}), status=401, mimetype="application/json")
-    
-    current_user = oauth2.verify_access_token(jwt)
     current_user["_id"] = str(current_user["_id"]) # convert objectId to string to allow it to be JSON serializable
 
     return Response(response=json.dumps({"data": current_user}), status=200, mimetype="application/json")
@@ -101,15 +95,10 @@ def get_user():
 
 ########################################
 # To sign a user out, and delete jwt cookie
-@auth.route("/session", methods=["DELETE"])
-def signout():
+@user.route("/session", methods=["DELETE"])
+@auth.auth_required
+def signout(current_user):
   try:
-    jwt = request.cookies.get("jwt")
-
-    # Check if jwt token in cookie exists
-    if (jwt is None or jwt is ''):
-      return Response(response=json.dumps({"message": "User is not logged in"}), status=401, mimetype="application/json")
-
     res = Response(response=json.dumps({"message": "Token successfully deleted, user logged out."}), status=200, mimetype="application/json")
     res.set_cookie(key='jwt', value='')
 
