@@ -1,0 +1,3 @@
+@echo Running server...
+cd ../api/routes
+python app.py
