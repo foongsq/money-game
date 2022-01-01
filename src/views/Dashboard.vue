@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { mapActions } from 'vuex'
 import StoreItem from '../components/StoreItem.vue';
 import InventoryItem from '../components/InventoryItem.vue';
 import { Carousel3d, Slide } from 'vue-carousel-3d';
@@ -56,6 +56,14 @@ export default {
     StoreItem, InventoryItem, Carousel3d, Slide
   },
   computed: {
+    store: {
+      get () {
+        return this.$store.getters.getStore;
+      },
+      set (newStore){ // need to include this in order to use v-for in carousel but this should not be called, because store data shouldnt be overriden
+        return newStore
+      } 
+    },
     carouselHeight: function () {
       return window.innerHeight * 0.23;
     },
@@ -97,46 +105,18 @@ export default {
           quantity: 10,
         },
       ],
-      store: [
-        {
-          itemId: 0,
-          imgUrl: "../assets/chips.jpg",
-          itemName: "chips1",
-          buyPrice: 3,
-        },
-        {
-          itemId: 1,
-          imgUrl: "../assets/chips.jpg",
-          itemName: "chips2",
-          buyPrice: 30,
-        },
-        {
-          itemId: 2,
-          imgUrl: "../assets/chips.jpg",
-          itemName: "chips3",
-          buyPrice: 300,
-        },
-        {
-          itemId: 3,
-          imgUrl: "../assets/chips.jpg",
-          itemName: "chipolata",
-          buyPrice: 13,
-        },
-      ],
     }
   },
   methods: {
+    ...mapActions([
+      'fetchStore' // map `this.fetchStore()` to `this.$store.dispatch('fetchStore')`
+    ]),
     onWork() {
       this.myMoney += 10;
     }
   },
-  created: async function() {
-    await axios.get("/api/store").then((response) => {
-      this.store = response.data;
-      console.log("this.store", this.store);
-    }, (error) => {
-      console.log(error);
-    });
+  created: function() {
+    this.fetchStore();
   }
 }
 </script>
