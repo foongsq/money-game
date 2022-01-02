@@ -12,9 +12,10 @@
           img-alt="Image"
           img-height="50%"
           img-top
-          style="font-size: 0.75rem; height: 100%; margin: 0 0.25rem; border: 1px solid blue; flex: 0 0 auto;"
+          style="height: 100%; margin: 0 0.25rem; flex: 0 0 auto;"
         >
-          <b-button size="sm" href="#" variant="primary" style="font-size: 0.75rem;">{{action}} ${{item.price}}</b-button>
+          <div class="quantity" v-if="itemType == itemTypes.INVENTORY"><p><b>Quantity</b>:{{item.quantity}}</p></div>
+          <b-button size="sm" href="#" variant="primary" style="font-size: 0.75rem;" @click="onAction(itemType, item)">{{action}} ${{item.price}}</b-button>
         </b-card>
       </div>
     </div>
@@ -22,13 +23,11 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 import { itemTypes } from '../constants'
 
 export default {
   name: 'ItemGallery',
-  components: {
-
-  },
   props: {
     itemType: String,
     title: String,
@@ -41,8 +40,20 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'buyItem', 'sellItem'
+    ]),
     formatImage (img) {
       return "data:image/jpg;base64, " + img;
+    },
+    onAction (itemType, item) {
+      if (itemType == itemTypes.INVENTORY) {
+        this.sellItem(item['store_item_id']);
+      } else if (itemType == itemTypes.STORE) {
+        this.buyItem(item['_id']);
+      } else {
+        throw 'Wrong item type supplied'
+      }
     }
   },
   created: function() {
@@ -90,5 +101,12 @@ export default {
   display: flex; 
   flex-wrap: nowrap; 
   height: 83%;
+}
+
+.quantity {
+  background-color: var(--light-yellow);
+  border-radius: 5px;
+  padding: 0 0.25rem;
+  font-size: 0.75rem;
 }
 </style>

@@ -70,14 +70,9 @@ def buy_inventory_item(store_item_id, current_user):
         }
       }, return_document=ReturnDocument.AFTER)
 
-    # Display inventory without image
-    inventory_display = updated_user["inventory"]
-    for item in inventory_display:
-      item.pop('base64Img')
-
     return Response(response=json.dumps({
       "money": updated_user["money"],
-      "inventory": inventory_display,
+      "inventory": inventory,
       }), status=200, mimetype="application/json")
   except Exception as ex:
     print(ex)
@@ -121,14 +116,9 @@ def sell_inventory_item(store_item_id, current_user):
         }
       }, return_document=ReturnDocument.AFTER)
 
-    # Display inventory without image
-    inventory_display = updated_user["inventory"]
-    for item in inventory_display:
-      item.pop('base64Img')
-
     return Response(response=json.dumps({
       "money": updated_user["money"],
-      "inventory": inventory_display,
+      "inventory": inventory,
       }), status=200, mimetype="application/json")
   except Exception as ex:
     print(ex)

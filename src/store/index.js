@@ -68,7 +68,15 @@ const store = new Vuex.Store({
       dispatch('fetchUser');
     },
 
-    // async signout ({ commit }) { },
+    async signout ({ commit }) { 
+      await axios.delete("/api/session", { withCredentials: true }).then(
+        (response) => response.data.data, 
+        (error) => { console.log(error);}
+      );
+      commit('setUsername', null);
+      commit('setMoney', null);
+      commit('setInventory', []);
+    },
 
     async fetchUser ({ commit }) {
       const response = await axios.get("/api/session", { withCredentials: true }).then(
@@ -105,11 +113,48 @@ const store = new Vuex.Store({
         (response) => response.data, 
         (error) => { console.log(error);}
       );
-      console.log(response);
       commit('setMoney', response.money);
     },
-    // async buyItem ({ commit, dispatch }) { },
-    // async sellItem ({ commit, dispatch }) { },
+
+    async buyItem ({ commit }, itemId) { 
+      const formData = new FormData();
+      formData.append('action', 'buy');
+      formData.append('itemId', itemId);
+
+      const response = await axios.post("/api/inventoryItem", formData, 
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          } 
+        }
+      ).then(
+        (response) => response.data, 
+        (error) => { console.log(error);}
+      );
+      commit('setMoney', response.money);
+      commit('setInventory', response.inventory);
+    },
+
+    async sellItem ({ commit }, itemId) { 
+      const formData = new FormData();
+      formData.append('action', 'sell');
+      formData.append('itemId', itemId);
+
+      const response = await axios.post("/api/inventoryItem", formData, 
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          } 
+        }
+      ).then(
+        (response) => response.data, 
+        (error) => { console.log(error);}
+      );
+      commit('setMoney', response.money);
+      commit('setInventory', response.inventory);
+    },
     // async addItem ({ commit, dispatch }) { },
     // async deleteItem ({ commit, dispatch }) { },
   }

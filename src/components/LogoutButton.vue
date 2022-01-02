@@ -1,16 +1,21 @@
 <template>
   <div class="logoutButtonDiv">
-    <button class="btn btn-secondary w-100">
-      <router-link style="text-decoration: none; color: inherit;" to="/authentication" >Logout</router-link>
-    </button>
+    <button class="btn btn-secondary w-100" @click="onSignout">Logout</button>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'LogoutButton',
   methods: {
-    
+    ...mapActions([
+      'signout'
+    ]),
+    onSignout () {
+      this.signout();
+      this.$router.push('/authentication');
+    }
   },
 }
 </script>
