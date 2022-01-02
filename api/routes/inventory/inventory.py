@@ -34,7 +34,7 @@ def buy_inventory_item(store_item_id, current_user):
 
     # If user's money < item.buyPrice, return error, 403 forbidden
     money = int(current_user["money"])
-    item_price = int(store_item_to_buy["buyPrice"])
+    item_price = int(store_item_to_buy["price"])
     if money < item_price:
       return Response(response=json.dumps({"message": "Insufficient money to buy the item"}), status=403, mimetype="application/json")
     
@@ -50,7 +50,7 @@ def buy_inventory_item(store_item_id, current_user):
       new_inventory_item = {
         "store_item_id": store_item_id,
         "itemName": store_item_to_buy["itemName"],
-        "sellPrice": store_item_to_buy["buyPrice"],
+        "price": store_item_to_buy["price"],
         "quantity": 1,
         "base64Img": store_item_to_buy["base64Img"],
       }
@@ -95,7 +95,7 @@ def sell_inventory_item(store_item_id, current_user):
     for item in inventory:
       if item["store_item_id"] == store_item_id:
         item_found = True
-        sell_price = int(item["sellPrice"])
+        sell_price = int(item["price"])
         # If quantity is 1, remove item from inventory
         if (item["quantity"] == 1):
           inventory.remove(item)

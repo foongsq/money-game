@@ -33,7 +33,7 @@ def add_store_item(admin):
     storeItem = {
       "itemName": request.form["itemName"],
       "base64Img": b64_img, 
-      "buyPrice": request.form["buyPrice"],
+      "price": request.form["price"],
     }
     inserted_item = utils.insert_item_into_store(storeItem)
     return Response(
@@ -41,7 +41,7 @@ def add_store_item(admin):
         {
           "_id": str(inserted_item['_id']),
           "itemName": inserted_item['itemName'],
-          "buyPrice": inserted_item['buyPrice'],
+          "price": inserted_item['price'],
           "base64Img": inserted_item['base64Img'],
         }
       ), 
@@ -63,7 +63,7 @@ def delete_store_item(admin):
         {
           "_id": str(deleted_item['_id']),
           "itemName": deleted_item['itemName'],
-          "buyPrice": deleted_item['buyPrice'],
+          "price": deleted_item['price'],
         }), 
       status=200, mimetype="application/json")
   except Exception as ex:
