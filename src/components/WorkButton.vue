@@ -1,15 +1,29 @@
 <template>
   <div class="workButtonDiv">
-    <button class="btn btn-success w-100" @click="onWork">Work (+10)</button>
+    <button class="btn btn-success w-100" @click="onWork(money)">Work (+10)</button>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'WorkButton',
+  computed: {
+    ...mapGetters({
+      money: 'getMoney',
+    }),
+  },
   methods: {
-    onWork() {
-      this.myMoney += 10;
+    ...mapActions([
+      'work'
+    ]),
+    onWork(money) {
+      //TODO: Optimize later
+      console.log('money', money);
+      let moneyValue = parseInt(money);
+      moneyValue += 10;
+      console.log('money after add', moneyValue);
+      this.work(moneyValue);
     },
   },
 }
@@ -20,7 +34,6 @@ export default {
 /* Add padding and margin to buttons */
 .workButtonDiv {
   height: 7.5vh;
-  border: 1px solid red;
   padding: 0.25rem;
   display: flex;
 }

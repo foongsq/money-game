@@ -6,10 +6,13 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: 'Money',
-  props: {
-    money: Number,
+  computed: {
+    ...mapGetters({
+      money: 'getMoney',
+    }),
   },
   data: function () {
     return {
@@ -17,10 +20,12 @@ export default {
     }
   },
   methods: {
-   
+    ...mapActions([
+      'fetchUser',
+    ]),
   },
-  created: function() {
-  
+  created: async function() {
+    await this.fetchUser();
   }
 }
 </script>

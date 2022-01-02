@@ -1,7 +1,7 @@
 <template>
   <div class="userParticularsDiv">
     <div class="userNameDiv"><p>{{ username }}</p></div>
-    <Money :money="money"/>
+    <Money />
   </div>
 </template>
 
@@ -15,7 +15,6 @@ export default {
   },
   props: {
     username: String,
-    money: Number,
   },
   data: function () {
     return {

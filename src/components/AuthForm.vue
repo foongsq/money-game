@@ -1,13 +1,16 @@
 <template>
   <div class="authForm">
     <h3>{{ text }}</h3>
-    <b-form-input class="authInput" v-model="username" placeholder="Enter your username"></b-form-input>
-    <b-form-input class="authInput" v-model="password" type="password" placeholder="Enter your password"></b-form-input>
-    <b-button class="authButton" variant="light">{{ text }}</b-button>
+    <b-form-input class="authInput" v-model="credentials.username" placeholder="Enter your username"></b-form-input>
+    <b-form-input class="authInput" v-model="credentials.password" type="password" placeholder="Enter your password"></b-form-input>
+    <b-button class="authButton" variant="light" @click="submit">{{ text }}</b-button>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import { authTypes } from '../constants'
+
 export default {
   name: 'AuthForm',
   props: {
@@ -16,10 +19,32 @@ export default {
   },
   data() {
     return {
-      username: '',
-      password: '',
+      authTypes: authTypes,
+      credentials: {
+        username: '',
+        password: '',
+      }
     }
   },
+  methods: {
+    ...mapActions([
+      'signup', 'signin'
+    ]),
+    async submit () {
+      if (this.authType == authTypes.SIGNUP) {
+        await this.signup(this.credentials);
+      } else if (this.authType == authTypes.SIGNIN) {
+        await this.signin(this.credentials);
+      } else {
+        throw 'Wrong authType supplied';
+      }
+      if (this.credentials.username == 'admin') {
+        this.$router.push('/admin-dashboard')
+      } else {
+        this.$router.push('/')
+      }
+    }
+  }
 }
 </script>
 

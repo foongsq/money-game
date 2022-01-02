@@ -31,3 +31,17 @@ def add_money(current_user):
   except Exception as ex:
     print(ex)
     return Response(response=json.dumps({"message": "Money cannot be updated"}), status=500, mimetype="application/json")
+
+########################################
+# To fetch a user's money
+@money.route("/money", methods=["GET"])
+@auth.auth_required
+def get_money(current_user):
+  try:
+    id = ObjectId(current_user["_id"])
+    
+    user = db.users.find_one({"_id": id})
+    return Response(response=json.dumps({"money": user['money']}), status=200, mimetype="application/json")
+  except Exception as ex:
+    print(ex)
+    return Response(response=json.dumps({"message": "Money cannot be updated"}), status=500, mimetype="application/json")
