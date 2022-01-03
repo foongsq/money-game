@@ -1,0 +1,3 @@
+@echo Running client...
+cd ..
+npm run serve

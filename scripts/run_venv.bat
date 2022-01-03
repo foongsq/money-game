@@ -1,0 +1,3 @@
+@echo Starting up python virtual environment...
+cd ../api/Scripts
+activate
