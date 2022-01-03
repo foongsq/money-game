@@ -52,11 +52,11 @@ def add_store_item(admin):
 
 ########################################
 # To get delete an item from the store
-@store.route("/storeItem", methods=["DELETE"])
+@store.route("/storeItem/<id>", methods=["DELETE"]) # delete requests dont support request body
 @auth.admin_required
-def delete_store_item(admin):
+def delete_store_item(admin, id):
   try:
-    id = request.form["itemId"]
+    print(id)
     deleted_item = db.store.find_one_and_delete({"_id": ObjectId(id)})
     return Response(
       response=json.dumps(

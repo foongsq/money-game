@@ -5,27 +5,29 @@
     <form enctype="multipart/form-data">
       <div style="uploadImageTopDiv">
         <p class="uploadImageText">Upload item image</p>
-        <p v-if="newItemImage">{{newItemImage}}</p>
+        <p v-if="form.newItemImageName">{{form.newItemImageName}}</p>
       </div>
-      <div v-if="!newItemImage" class="dropbox">
+      <div v-if="!form.newItemImageName" class="dropbox">
         <input type="file" @change="onImageChange($event.target.files)"
           accept="image/*" class="fileInput">
         <p v-if="isSaving">
-          Uploading {{ fileCount }} files...
+          Uploading file...
         </p>
         <p v-else>
           Drag your file(s) here to begin<br> or click to browse
         </p>
       </div>
     </form>
-    <b-form-input class="adminInput" v-model="newItemName" placeholder="Enter item name"></b-form-input>
-    <b-form-input class="adminInput" v-model="newItemPrice" type="number" placeholder="Enter item price"></b-form-input>
+    <b-form-input class="adminInput" v-model="form.newItemName" placeholder="Enter item name"></b-form-input>
+    <b-form-input class="adminInput" v-model="form.newItemPrice" type="number" placeholder="Enter item price"></b-form-input>
     <b-button class="adminButton" variant="light" @click="onReset">Reset</b-button>
-    <b-button class="adminButton" variant="light" >Add Item</b-button>
+    <b-button class="adminButton" variant="light" @click="onSubmit">Add Item</b-button>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'ItemForm',
   components: {
@@ -38,23 +40,35 @@ export default {
     return {
       isInitial: true,
       isSaving: false,
-      newItemImage: '',
-      newItemName: '',
-      newItemPrice: null,
+      form: {
+        newItemImageName: '',
+        newItemImageFile: null,
+        newItemName: '',
+        newItemPrice: null,
+      },      
     }
   },
   methods: {
-    onImageChange(file) {
+    ...mapActions([
+      'addItem'
+    ]),
+    onImageChange (file) {
       // TODO: Send this file to backend to process and store
-      console.log('file', file);
+      console.log('file', file)
       this.isSaving = true;
-      this.newItemImage = file[0].name;
+      this.form.newItemImageName = file[0].name;
+      this.form.newItemImageFile = file[0]
       setTimeout(() => {this.isSaving = false;}, 1000) // To mimic saving
     },
-    onReset() {
-      this.newItemImage = '';
-      this.newItemName = '';
-      this.newItemPrice = null;
+    onReset () {
+      this.form.newItemImageName = '';
+      this.form.newItemImageFile = null;
+      this.form.newItemName = '';
+      this.form.newItemPrice = null;
+    },
+    async onSubmit () {
+      await this.addItem(this.form);
+      this.onReset();
     }
   },
 }

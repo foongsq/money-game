@@ -2,12 +2,8 @@
   <div class="adminDashboard">
     <h1>Welcome Admin!</h1>
     <ItemForm />
-    <ItemGallery :itemType="itemTypes.STORE" title="Store" :items="store" action="Buy"/>
-    <div class="logoutButtonDiv">
-      <button class="btn btn-secondary w-100">
-        <router-link style="text-decoration: none; color: inherit;" to="/authentication">Logout</router-link>
-      </button>
-    </div>
+    <ItemGallery :itemType="itemTypes.STORE" title="Store" :items="store" action="Delete" :isAdmin="true"/>
+    <LogoutButton />
   </div>
 </template>
 
@@ -15,6 +11,7 @@
 import { mapActions } from 'vuex'
 import ItemForm from '../components/ItemForm.vue';
 import ItemGallery from '../components/ItemGallery.vue';
+import LogoutButton from '../components/LogoutButton.vue';
 
 import { itemTypes } from '../constants'
 
@@ -22,7 +19,8 @@ export default {
   name: 'AdminDashboard',
   components: {
     ItemGallery,
-    ItemForm
+    ItemForm,
+    LogoutButton
   },
   computed: {
     store: function () {

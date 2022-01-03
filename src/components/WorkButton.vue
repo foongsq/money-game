@@ -19,10 +19,8 @@ export default {
     ]),
     onWork(money) {
       //TODO: Optimize later
-      console.log('money', money);
       let moneyValue = parseInt(money);
       moneyValue += 10;
-      console.log('money after add', moneyValue);
       this.work(moneyValue);
     },
   },

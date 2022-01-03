@@ -15,7 +15,8 @@
           style="height: 100%; margin: 0 0.25rem; flex: 0 0 auto;"
         >
           <div class="quantity" v-if="itemType == itemTypes.INVENTORY"><p><b>Quantity</b>:{{item.quantity}}</p></div>
-          <b-button size="sm" href="#" variant="primary" style="font-size: 0.75rem;" @click="onAction(itemType, item)">{{action}} ${{item.price}}</b-button>
+          <b-button v-if="isAdmin && itemType == itemTypes.STORE" size="sm" href="#" variant="primary" style="font-size: 0.75rem;" @click="onDelete(item)">{{action}}</b-button>
+          <b-button v-else size="sm" href="#" variant="primary" style="font-size: 0.75rem;" @click="onAction(itemType, item)">{{action}} ${{item.price}}</b-button>
         </b-card>
       </div>
     </div>
@@ -30,6 +31,7 @@ export default {
   name: 'ItemGallery',
   props: {
     itemType: String,
+    isAdmin: Boolean,
     title: String,
     items: Array,
     action: String,
@@ -41,24 +43,24 @@ export default {
   },
   methods: {
     ...mapActions([
-      'buyItem', 'sellItem'
+      'buyItem', 'sellItem', 'deleteItem'
     ]),
     formatImage (img) {
       return "data:image/jpg;base64, " + img;
     },
-    onAction (itemType, item) {
+    async onAction (itemType, item) {
       if (itemType == itemTypes.INVENTORY) {
-        this.sellItem(item['store_item_id']);
+        await this.sellItem(item['store_item_id']);
       } else if (itemType == itemTypes.STORE) {
-        this.buyItem(item['_id']);
+        await this.buyItem(item['_id']);
       } else {
         throw 'Wrong item type supplied'
       }
+    },
+   async onDelete (item) {
+      await this.deleteItem(item['_id']);
     }
   },
-  created: function() {
-    console.log(itemTypes.INVENTORY)
-  }
 }
 </script>
 

@@ -10,6 +10,7 @@
 <script>
 import { mapActions } from 'vuex'
 import { authTypes } from '../constants'
+import { pathNames } from '../router/routes'
 
 export default {
   name: 'AuthForm',
@@ -39,9 +40,9 @@ export default {
         throw 'Wrong authType supplied';
       }
       if (this.credentials.username == 'admin') {
-        this.$router.push('/admin-dashboard')
+        this.$router.push(pathNames.ADMINDASHBOARD)
       } else {
-        this.$router.push('/')
+        this.$router.push(pathNames.DASHBOARD)
       }
     }
   }

@@ -19,8 +19,8 @@ const store = new Vuex.Store({
   getters: {
     getUsername: state => state.username,
     getMoney: state => state.money,
-    getInventory: state => state.inventory,
-    getStore: state => state.store,
+    getInventory: state => state.inventory.reverse(),
+    getStore: state => state.store.reverse(),
   },
 
   // Setters
@@ -79,9 +79,10 @@ const store = new Vuex.Store({
     },
 
     async fetchUser ({ commit }) {
-      const response = await axios.get("/api/session", { withCredentials: true }).then(
+      const response = await axios.get("/api/session", { withCredentials: true })
+      .then(
         (response) => response.data.data, 
-        (error) => { console.log(error);}
+        (error) => { throw error.response; }
       );
       commit('setUsername', response.username);
       commit('setMoney', response.money);
@@ -155,8 +156,39 @@ const store = new Vuex.Store({
       commit('setMoney', response.money);
       commit('setInventory', response.inventory);
     },
-    // async addItem ({ commit, dispatch }) { },
-    // async deleteItem ({ commit, dispatch }) { },
+    async addItem ({ dispatch }, newStoreItem) { 
+      const formData = new FormData();
+      formData.append('img', newStoreItem.newItemImageFile);
+      formData.append('itemName', newStoreItem.newItemName);
+      formData.append('price', newStoreItem.newItemPrice);
+
+      await axios.post("/api/storeItem", formData, 
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          } 
+        }
+      ).then(
+        (response) => response.data, 
+        (error) => { console.log(error);}
+      );
+
+      dispatch('fetchStore')
+    },
+    async deleteItem ({ dispatch }, itemId) {
+      const url = "/api/storeItem/" + itemId
+      await axios.delete(url, 
+        { 
+          withCredentials: true,
+        }
+      ).then(
+        (response) => response.data, 
+        (error) => { throw error.response;}
+      );
+
+      dispatch('fetchStore')
+     },
   }
 })
 

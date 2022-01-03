@@ -9,6 +9,7 @@
 <script>
 import AuthForm from '../components/AuthForm.vue'
 import { authTypes } from '../constants'
+import { pathNames } from '../router/routes'
 
 export default {
   components: { AuthForm },
@@ -18,6 +19,15 @@ export default {
       authTypes: authTypes,
     }
   },
+  created: function () {
+    if (this.$store.state.username != null &&
+        this.$store.state.username != 'admin') {
+      this.$router.push(pathNames.DASHBOARD);
+    } else if (this.$store.state.username != null &&
+      this.$store.state.username == 'admin') {
+      this.$router.push(pathNames.ADMINDASHBOARD);
+    }
+  }
 }
 </script>
 

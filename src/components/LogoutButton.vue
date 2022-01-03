@@ -6,6 +6,8 @@
 
 <script>
 import { mapActions } from 'vuex'
+import { pathNames } from '../router/routes'
+
 export default {
   name: 'LogoutButton',
   methods: {
@@ -13,8 +15,8 @@ export default {
       'signout'
     ]),
     onSignout () {
+      this.$router.push(pathNames.AUTHENTICATION);
       this.signout();
-      this.$router.push('/authentication');
     }
   },
 }
