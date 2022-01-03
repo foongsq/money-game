@@ -5,6 +5,8 @@ import axios from 'axios';
 // Make Vuex globally available throughout the app
 Vue.use(Vuex);
 
+const API_URL = "http://localhost:80";
+
 const store = new Vuex.Store({
   namespaced: false,
   // Data
@@ -40,7 +42,7 @@ const store = new Vuex.Store({
       formData.append('username', payload.username);
       formData.append('password', payload.password);
 
-      await axios.post("/api/user", formData, {
+      await axios.post(API_URL + "/api/user", formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -56,7 +58,7 @@ const store = new Vuex.Store({
       formData.append('username', payload.username);
       formData.append('password', payload.password);
 
-      await axios.post("/api/session", formData, {
+      await axios.post(API_URL + "/api/session", formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -69,7 +71,7 @@ const store = new Vuex.Store({
     },
 
     async signout ({ commit }) { 
-      await axios.delete("/api/session", { withCredentials: true }).then(
+      await axios.delete(API_URL + "/api/session", { withCredentials: true }).then(
         (response) => response.data.data, 
         (error) => { console.log(error);}
       );
@@ -79,7 +81,7 @@ const store = new Vuex.Store({
     },
 
     async fetchUser ({ commit }) {
-      const response = await axios.get("/api/session", { withCredentials: true })
+      const response = await axios.get(API_URL + "/api/session", { withCredentials: true })
       .then(
         (response) => response.data.data, 
         (error) => { throw error.response; }
@@ -91,7 +93,7 @@ const store = new Vuex.Store({
 
     async fetchStore ({ commit }) { 
       // Fetch store items from api
-      const store = await axios.get("/api/store").then(
+      const store = await axios.get(API_URL + "/api/store").then(
         (response) => response.data, 
         (error) => { console.log(error);}
         );
@@ -103,7 +105,7 @@ const store = new Vuex.Store({
       const formData = new FormData();
       formData.append('money', money);
 
-      const response = await axios.post("/api/money", formData, 
+      const response = await axios.post(API_URL + "/api/money", formData, 
         { 
           withCredentials: true,
           headers: {
@@ -122,7 +124,7 @@ const store = new Vuex.Store({
       formData.append('action', 'buy');
       formData.append('itemId', itemId);
 
-      const response = await axios.post("/api/inventoryItem", formData, 
+      const response = await axios.post(API_URL + "/api/inventoryItem", formData, 
         { 
           withCredentials: true,
           headers: {
@@ -142,7 +144,7 @@ const store = new Vuex.Store({
       formData.append('action', 'sell');
       formData.append('itemId', itemId);
 
-      const response = await axios.post("/api/inventoryItem", formData, 
+      const response = await axios.post(API_URL + "/api/inventoryItem", formData, 
         { 
           withCredentials: true,
           headers: {
@@ -162,7 +164,7 @@ const store = new Vuex.Store({
       formData.append('itemName', newStoreItem.newItemName);
       formData.append('price', newStoreItem.newItemPrice);
 
-      await axios.post("/api/storeItem", formData, 
+      await axios.post(API_URL + "/api/storeItem", formData, 
         { 
           withCredentials: true,
           headers: {
@@ -177,7 +179,7 @@ const store = new Vuex.Store({
       dispatch('fetchStore')
     },
     async deleteItem ({ dispatch }, itemId) {
-      const url = "/api/storeItem/" + itemId
+      const url = API_URL + "/api/storeItem/" + itemId
       await axios.delete(url, 
         { 
           withCredentials: true,
