@@ -19,9 +19,4 @@ app.register_blueprint(store, url_prefix=URL_PREFIX)
 app.register_blueprint(inventory, url_prefix=URL_PREFIX)
 
 # CORS configuration
-cors = CORS(app, resources={r"/*": { "origins": "http://localhost:8080"}}, supports_credentials=True) # allow frontend to access API
-
-########################################
-# Run your flask app on port 80
-if __name__ == "__main__":
-  app.run(port=80, debug=True)
+cors = CORS(app, resources={r"/*": { "origins": ["http://localhost:8080", "https://moneygame-frontend.herokuapp.com"]}}, supports_credentials=True) # allow frontend to access API
