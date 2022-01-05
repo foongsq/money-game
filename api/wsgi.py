@@ -1,4 +1,7 @@
 from routes.app import app
 
-if __name__ == "__main__":
-  app.run()
+try:
+  if __name__ == "__main__":
+    app.run()
+except Exception as e:
+  print(e)
