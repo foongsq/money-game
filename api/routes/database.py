@@ -13,4 +13,5 @@ try:
   db = mongo.test # access database named moneygame
   mongo.server_info() # trigger exception if connection fails
 except Exception as e: 
+  print('Error connecting to MongoDB')
   print(e)
