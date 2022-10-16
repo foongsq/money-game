@@ -3,7 +3,7 @@ FROM node:16.14.2 as build
 
 WORKDIR /frontend
 
-COPY package*.json ./
+COPY ./package*.json ./
 COPY ./ ./
 
 RUN npm install
