@@ -81,7 +81,7 @@ def admin_required(f):
             current_user = verify_access_token(jwt)
 
             # Checks if current user is admin
-            if (str(current_user["_id"]) != ADMIN_ID):
+            if (str(current_user["username"]) != ADMIN_ID):
                 return Response(response=json.dumps({"message": "Unauthorized access, only admins can access this resource"}), status=401, mimetype="application/json")
         except:
             return Response(response=json.dumps({"message": "Token is invalid"}), status=401, mimetype="application/json")
