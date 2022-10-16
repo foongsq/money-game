@@ -23,4 +23,10 @@ jobs:
           dontautocreate: true
           branch: master
           appdir: "api"
-          env_file: "/.env.staging"
+        env:
+          JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+          JWT_ALGORITHM: ${{secrets.JWT_ALGORITHM}}
+          JWT_EXPIRY_MIN: ${{secrets.JWT_EXPIRY_MIN}}
+          ADMIN_ID: ${{secrets.ADMIN_ID}}
+          MONGODB_URI: ${{secrets.MONGODB_URI}}
+          MONGODB_DB: moneygame-staging
