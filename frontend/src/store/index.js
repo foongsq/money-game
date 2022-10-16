@@ -5,8 +5,7 @@ import axios from "axios";
 // Make Vuex globally available throughout the app
 Vue.use(Vuex);
 
-// const API_URL = "https://moneygame-backend.herokuapp.com";
-const API_URL = "http://127.0.0.1:5000/";
+const API_URL = process.env.BACKEND_URL;
 
 const store = new Vuex.Store({
   namespaced: false,

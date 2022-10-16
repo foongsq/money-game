@@ -25,3 +25,5 @@ jobs:
           dontautocreate: true
           branch: master
           appdir: "frontend"
+        env:
+          HD_BACKEND_URI: ${{secrets.BACKEND_URI_STAGING}}
