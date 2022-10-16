@@ -5,7 +5,7 @@ import axios from "axios";
 // Make Vuex globally available throughout the app
 Vue.use(Vuex);
 
-const API_URL = process.env.VUE_APP_BACKEND_URL;
+const API_URL = process.env.VUE_APP_BACKEND_URI;
 
 const store = new Vuex.Store({
   namespaced: false,
