@@ -13,7 +13,7 @@ on:
       - ".github/workflows/frontend-cd.yml"
 
 jobs:
-  build:
+  Deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -26,4 +26,4 @@ jobs:
           branch: master
           appdir: "frontend"
         env:
-          HD_BACKEND_URI: ${{secrets.BACKEND_URI_STAGING}}
+          HD_VUE_APP_BACKEND_URI: ${{secrets.BACKEND_URI_STAGING}}
