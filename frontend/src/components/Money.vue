@@ -1,7 +1,7 @@
 <template>
   <div class="moneyDiv">
     <img className="moneyIcon" src="../assets/money-icon.jpg" height="20px"/>
-    <p>{{ money }}</p>
+    <p>{{ parseFloat(money).toFixed(2) }}</p>
   </div>
 </template>
 

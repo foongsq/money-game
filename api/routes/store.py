@@ -2,9 +2,9 @@ import json
 import base64
 from flask import Blueprint, Response, request
 from bson.objectid import ObjectId
-from .. import utils
-from .. import auth
-from routes.database import db
+import utils
+import auth
+from database import db
 
 store = Blueprint('store', __name__)
 

@@ -5,18 +5,16 @@
       <div class="cardGroup">
         <b-card
           v-for="(item, index) in items" 
-          :title="item.itemName"
           :key="index"
           title-tag="p"
-          :img-src="formatImage(item.base64Img)"
-          img-alt="Image"
-          img-height="50%"
-          img-top
           style="height: 100%; margin: 0 0.25rem; flex: 0 0 auto;"
         >
+          <p style="maxWidth: 125px">{{item.itemName}}</p>
+          <img :src="formatImage(item.base64Img)" height="125px" style="marginBottom: 0.25rem" />
           <div class="quantity" v-if="itemType == itemTypes.INVENTORY"><p><b>Quantity</b>:{{item.quantity}}</p></div>
-          <b-button v-if="isAdmin && itemType == itemTypes.STORE" size="sm" href="#" variant="primary" style="font-size: 0.75rem;" @click="onDelete(item)">{{action}}</b-button>
-          <b-button v-else size="sm" href="#" variant="primary" style="font-size: 0.75rem;" @click="onAction(itemType, item)">{{action}} ${{item.price}}</b-button>
+          <div class="quantity" v-if="itemType == itemTypes.STORE && !isAdmin"><p>ON SALE!</p></div>
+          <b-button v-if="isAdmin && itemType == itemTypes.STORE" size="sm" href="#" variant="primary" class="actionButton" style="font-size: 0.75rem;" @click="onDelete(item)">{{action}}</b-button>
+          <b-button v-else size="sm" href="#" variant="primary" style="font-size: 0.75rem;" class="actionButton" @click="onAction(itemType, item)">{{action}} ${{item.price}}</b-button>
         </b-card>
       </div>
     </div>
@@ -68,7 +66,7 @@ export default {
 <style>
 .outerDiv {
   padding: 0.5rem;
-  height: 40vh;
+  /* height: 40vh; */
 }
 /*  - Add margin and padding around inventory
     - add black rounded border
@@ -99,10 +97,13 @@ export default {
 
 .cardGroup {
   overflow-x: auto; 
-  overflow-y: hidden; 
+  overflow-y: scroll; 
   display: flex; 
   flex-wrap: nowrap; 
-  height: 83%;
+}
+
+.cardGroup::-webkit-scrollbar {
+  display: none;
 }
 
 .quantity {
@@ -110,5 +111,10 @@ export default {
   border-radius: 5px;
   padding: 0 0.25rem;
   font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.actionButton {
+  width: 100%;
 }
 </style>

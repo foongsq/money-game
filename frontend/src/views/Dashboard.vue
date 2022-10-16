@@ -1,4 +1,5 @@
 <template>
+<div class="dashboardContainer">
   <div class="dashboard">
     <Spinner v-if="isLoading"/>
     <div v-else>
@@ -8,6 +9,7 @@
       <WorkButton />
       <LogoutButton />
     </div>
+  </div>
   </div>
 </template>
 
@@ -67,6 +69,11 @@ export default {
 
 <!-- Not scoped because we want AdminDashboard to receive same styling for store -->
 <style>
+.dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .dashboard {
   max-width: 600px;
   height: 100vh;

@@ -2,8 +2,8 @@ import json
 from flask import Blueprint, Response, request
 from bson.objectid import ObjectId
 from pymongo.collection import ReturnDocument
-from .. import auth
-from routes.database import db
+import auth
+from database import db
 
 money = Blueprint('money', __name__)
 

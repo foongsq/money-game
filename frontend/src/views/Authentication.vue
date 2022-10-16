@@ -1,8 +1,10 @@
 <template>
+<div class="authenticationContainer">
   <div class="authentication">
     <h1>Welcome!</h1>
     <AuthForm :authType="authTypes.SIGNIN" text="Sign In"/>
     <AuthForm :authType="authTypes.SIGNUP" text="Sign Up"/>
+  </div>
   </div>
 </template>
 
@@ -33,6 +35,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.authenticationContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .authentication {
   max-width: 600px;
   height: 100vh;

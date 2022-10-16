@@ -32,17 +32,22 @@ export default {
       'signup', 'signin'
     ]),
     async submit () {
-      if (this.authType == authTypes.SIGNUP) {
-        await this.signup(this.credentials);
-      } else if (this.authType == authTypes.SIGNIN) {
-        await this.signin(this.credentials);
-      } else {
-        throw 'Wrong authType supplied';
-      }
-      if (this.credentials.username == 'admin') {
-        this.$router.push(pathNames.ADMINDASHBOARD)
-      } else {
-        this.$router.push(pathNames.DASHBOARD)
+      try {
+        if (this.authType == authTypes.SIGNUP) {
+          await this.signup(this.credentials);
+        } else if (this.authType == authTypes.SIGNIN) {
+          await this.signin(this.credentials);
+        } else {
+          throw 'Wrong authType supplied';
+        }
+        if (this.credentials.username == 'admin') {
+          this.$router.push(pathNames.ADMINDASHBOARD)
+        } else {
+          this.$router.push(pathNames.DASHBOARD)
+        }
+      } catch (e) {
+        console.error(e);
+        throw e;
       }
     }
   }

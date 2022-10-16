@@ -25,3 +25,7 @@ pnpm-debug.log*
 /api/Lib/site-packages
 __pycache__/
 .env
+
+# Frontend
+/frontend/node_modules
+/frontend/dist

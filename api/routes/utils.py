@@ -1,4 +1,4 @@
-from routes.database import db
+from database import db
 
 # Inserts an item into users db and returns the inserted item
 def insert_item_into_users(item):

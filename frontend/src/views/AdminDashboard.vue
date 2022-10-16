@@ -1,10 +1,12 @@
 <template>
+<div class="adminDashboardContainer">
   <div class="adminDashboard">
     <h1>Welcome Admin!</h1>
     <ItemForm />
     <ItemGallery :itemType="itemTypes.STORE" title="Store" :items="store" action="Delete" :isAdmin="true"/>
     <LogoutButton />
   </div>
+</div>
 </template>
 
 <script>
@@ -45,6 +47,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.adminDashboardContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .adminDashboard {
   max-width: 600px;
   height: 100vh;

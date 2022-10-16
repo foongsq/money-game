@@ -19,8 +19,8 @@ export default {
     ]),
     onWork(money) {
       //TODO: Optimize later
-      let moneyValue = parseInt(money);
-      moneyValue += 10;
+      let moneyValue = parseFloat(money);
+      moneyValue += 10.0;
       this.work(moneyValue);
     },
   },
