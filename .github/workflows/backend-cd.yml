@@ -23,7 +23,7 @@ jobs:
           heroku_app_name: ${{secrets.HEROKU_BACKEND_STAGING}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           dontautocreate: true
-          branch: master
+          branch: staging
           appdir: "api"
         env:
           HD_JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
