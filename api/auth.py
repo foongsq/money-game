@@ -53,8 +53,7 @@ def auth_required(f):
             # jwt is passed in the request header
             if 'x-access-token' in request.headers:
                 jwt = request.headers['x-access-token']
-
-            if (jwt is None or jwt == ''):
+            if (not jwt or jwt == '' or jwt == 'null'):
                 return Response(response=json.dumps({"message": "User is not logged in"}), status=401, mimetype="application/json")
 
             current_user = verify_access_token(jwt)
