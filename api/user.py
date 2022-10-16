@@ -96,9 +96,9 @@ def signin():
 @auth.auth_required
 def get_user(current_user):
     try:
+        print('current user', current_user)
         # convert objectId to string to allow it to be JSON serializable
         current_user["_id"] = str(current_user["_id"])
-        print(current_user)
         return Response(response=json.dumps({"data": current_user}), status=200, mimetype="application/json")
     except Exception as ex:
         print(ex)

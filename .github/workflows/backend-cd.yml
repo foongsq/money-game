@@ -2,13 +2,15 @@ name: Backend CD
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "staging" ]
     paths: 
-      - "/api"
+      - "api/**"
+      - ".github/workflows/backend-cd.yml"
   pull_request:
-    branches: [ "master" ]
+    branches: [ "staging" ]
     paths: 
-      - "/api"
+      - "api/**"
+      - ".github/workflows/backend-cd.yml"
 
 jobs:
   Deploy:

@@ -2,12 +2,12 @@ name: Frontend CD
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "staging" ]
     paths: 
       - "frontend/**"
       - ".github/workflows/frontend-cd.yml"
   pull_request:
-    branches: [ "master" ]
+    branches: [ "staging" ]
     paths: 
       - "frontend/**"
       - ".github/workflows/frontend-cd.yml"
