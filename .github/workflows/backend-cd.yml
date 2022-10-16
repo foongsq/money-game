@@ -24,9 +24,9 @@ jobs:
           branch: master
           appdir: "api"
         env:
-          JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
-          JWT_ALGORITHM: ${{secrets.JWT_ALGORITHM}}
-          JWT_EXPIRY_MIN: ${{secrets.JWT_EXPIRY_MIN}}
-          ADMIN_ID: ${{secrets.ADMIN_ID}}
-          MONGODB_URI: ${{secrets.MONGODB_URI}}
-          MONGODB_DB: moneygame-staging
+          HD_JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+          HD_JWT_ALGORITHM: ${{secrets.JWT_ALGORITHM}}
+          HD_JWT_EXPIRY_MIN: ${{secrets.JWT_EXPIRY_MIN}}
+          HD_ADMIN_ID: ${{secrets.ADMIN_ID}}
+          HD_MONGODB_URI: ${{secrets.MONGODB_URI}}
+          HD_MONGODB_DB: moneygame-staging
