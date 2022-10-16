@@ -1,0 +1,34 @@
+name: Backend Staging CD
+
+on:
+  push:
+    branches: [ "staging" ]
+    paths: 
+      - "api/**"
+      - ".github/workflows/backend-staging-cd.yml"
+  pull_request:
+    branches: [ "staging" ]
+    paths: 
+      - "api/**"
+      - ".github/workflows/backend-staging-cd.yml"
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_BACKEND_STAGING}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          dontautocreate: true
+          branch: staging
+          appdir: "api"
+        env:
+          HD_JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+          HD_JWT_ALGORITHM: ${{secrets.JWT_ALGORITHM}}
+          HD_JWT_EXPIRY_MIN: ${{secrets.JWT_EXPIRY_MIN}}
+          HD_ADMIN_ID: ${{secrets.ADMIN_ID}}
+          HD_MONGODB_URI: ${{secrets.MONGODB_URI}}
+          HD_MONGODB_DB: moneygame-staging

@@ -1,0 +1,29 @@
+name: Frontend Prod CD
+
+on:
+  push:
+    branches: [ "prod" ]
+    paths: 
+      - "frontend/**"
+      - ".github/workflows/frontend-prod-cd.yml"
+  pull_request:
+    branches: [ "prod" ]
+    paths: 
+      - "frontend/**"
+      - ".github/workflows/frontend-prod-cd.yml"
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: ${{secrets.HEROKU_FRONTEND_PROD}}
+          heroku_email: ${{secrets.HEROKU_EMAIL}}
+          dontautocreate: true
+          branch: prod
+          appdir: "frontend"
+        env:
+          HD_VUE_APP_BACKEND_URI: ${{secrets.BACKEND_URI_PROD}}

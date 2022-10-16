@@ -1,16 +1,16 @@
-name: Backend CD
+name: Backend Prod CD
 
 on:
   push:
-    branches: [ "staging" ]
+    branches: [ "prod" ]
     paths: 
       - "api/**"
-      - ".github/workflows/backend-cd.yml"
+      - ".github/workflows/backend-prod-cd.yml"
   pull_request:
-    branches: [ "staging" ]
+    branches: [ "prod" ]
     paths: 
       - "api/**"
-      - ".github/workflows/backend-cd.yml"
+      - ".github/workflows/backend-prod-cd.yml"
 
 jobs:
   Deploy:
@@ -20,10 +20,10 @@ jobs:
       - uses: akhileshns/heroku-deploy@v3.12.12
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ${{secrets.HEROKU_BACKEND_STAGING}}
+          heroku_app_name: ${{secrets.HEROKU_BACKEND_PROD}}
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           dontautocreate: true
-          branch: staging
+          branch: prod
           appdir: "api"
         env:
           HD_JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
@@ -31,4 +31,4 @@ jobs:
           HD_JWT_EXPIRY_MIN: ${{secrets.JWT_EXPIRY_MIN}}
           HD_ADMIN_ID: ${{secrets.ADMIN_ID}}
           HD_MONGODB_URI: ${{secrets.MONGODB_URI}}
-          HD_MONGODB_DB: moneygame-staging
+          HD_MONGODB_DB: moneygame-prod
