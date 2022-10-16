@@ -25,6 +25,7 @@ pnpm-debug.log*
 /api/Lib/site-packages
 __pycache__/
 .env
+.env.staging
 
 # Frontend
 /frontend/node_modules
